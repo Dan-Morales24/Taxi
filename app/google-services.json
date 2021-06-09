@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "936614364148",
+    "project_id": "taxi-5f817",
+    "storage_bucket": "taxi-5f817.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:936614364148:android:d227541f6e8af3abb2efa1",
+        "android_client_info": {
+          "package_name": "com.example.rastreosgps.taxi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "936614364148-8cu51jrsur69utr0aof5v32sma5d0slu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBp_PG1Db2LqFLDk5PSm1XO_fBtR-C3F3o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "936614364148-8cu51jrsur69utr0aof5v32sma5d0slu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

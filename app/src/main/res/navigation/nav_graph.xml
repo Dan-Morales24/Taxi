@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/inicio_Fragment">
+
+    <fragment
+        android:id="@+id/fragmentLogin"
+        android:name="com.example.rastreosgps.taxi.FragmentLogin"
+        android:label="FragmentLogin"
+        tools:layout="@layout/fragment_log">
+        <action
+            android:id="@+id/action_fragmentLogin_to_fragmentRegistro2"
+            app:destination="@id/fragmentRegistro" />
+        <action
+            android:id="@+id/action_fragmentLogin_to_inicio_Sesion"
+            app:destination="@id/inicio_Sesion" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentRegistro"
+        android:name="com.example.rastreosgps.taxi.FragmentRegistro"
+        android:label="FragmentRegistro"
+        tools:layout="@layout/fragment_registro"
+        >
+        <action
+            android:id="@+id/action_fragmentRegistro_to_fragmentLogin"
+            app:destination="@id/fragmentLogin" />
+    </fragment>
+    <fragment
+        android:id="@+id/inicio_Fragment"
+        android:name="com.example.rastreosgps.taxi.Inicio_Fragment"
+        android:label="fragment_inicio"
+        tools:layout="@layout/fragment_inicio" >
+        <action
+            android:id="@+id/action_inicio_Fragment_to_fragmentLogin"
+            app:destination="@id/fragmentLogin" />
+    </fragment>
+    <fragment
+        android:id="@+id/inicio_Sesion"
+        android:name="com.example.rastreosgps.taxi.Inicio_Sesion"
+        android:label="fragment_inicio__sesion"
+        tools:layout="@layout/fragment_inicio__sesion" >
+        <action
+            android:id="@+id/action_inicio_Sesion_to_fragmentLogin"
+            app:destination="@id/fragmentLogin" />
+    </fragment>
+</navigation>

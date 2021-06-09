@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_maps"
+    app:startDestination="@id/fragmentMap">
+
+    <fragment
+        android:id="@+id/fragmentDestino"
+        android:name="com.example.rastreosgps.taxi.FragmentDestino"
+        android:label="fragment_destino"
+        tools:layout="@layout/fragment_destino" />
+    <fragment
+        android:id="@+id/fragmentMap"
+        android:name="com.example.rastreosgps.taxi.FragmentMap"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map" >
+        <action
+            android:id="@+id/action_fragmentMap_to_elegirDestino"
+            app:destination="@id/elegirDestino" />
+    </fragment>
+    <fragment
+        android:id="@+id/elegirDestino"
+        android:name="com.example.rastreosgps.taxi.ElegirDestino"
+        android:label="elegir_destino"
+        tools:layout="@layout/elegir_destino" >
+        <action
+            android:id="@+id/action_elegirDestino_to_fragmentDestino"
+            app:destination="@id/fragmentDestino" />
+    </fragment>
+</navigation>
