@@ -78,10 +78,11 @@
 
     <Button
         android:id="@+id/Registrarse"
-        android:layout_width="162dp"
-        android:layout_height="46dp"
+        android:layout_width="333dp"
+        android:layout_height="56dp"
         android:layout_marginTop="76dp"
-        android:text="Siguiente"
+        android:background="@drawable/boton_redondo"
+        android:text="Continuar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -93,10 +94,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="40dp"
+        android:background="@color/colorBlack"
         android:text="Atras"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.037"
+        app:layout_constraintHorizontal_bias="0.039"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,13 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_maps"
-    app:startDestination="@id/fragmentMap">
+    app:startDestination="@id/elegirDestino">
 
     <fragment
         android:id="@+id/fragmentDestino"
         android:name="com.example.rastreosgps.taxi.FragmentDestino"
         android:label="fragment_destino"
-        tools:layout="@layout/fragment_destino" />
+        tools:layout="@layout/fragment_destino" >
+        <action
+            android:id="@+id/action_fragmentDestino_to_fragmentMap"
+            app:destination="@id/fragmentMap" />
+    </fragment>
     <fragment
         android:id="@+id/fragmentMap"
         android:name="com.example.rastreosgps.taxi.FragmentMap"
@@ -18,6 +22,9 @@
         <action
             android:id="@+id/action_fragmentMap_to_elegirDestino"
             app:destination="@id/elegirDestino" />
+        <action
+            android:id="@+id/action_fragmentMap_to_fragmentDestino"
+            app:destination="@id/fragmentDestino" />
     </fragment>
     <fragment
         android:id="@+id/elegirDestino"
@@ -25,7 +32,7 @@
         android:label="elegir_destino"
         tools:layout="@layout/elegir_destino" >
         <action
-            android:id="@+id/action_elegirDestino_to_fragmentDestino"
-            app:destination="@id/fragmentDestino" />
+            android:id="@+id/action_elegirDestino_to_fragmentMap"
+            app:destination="@id/fragmentMap" />
     </fragment>
 </navigation>

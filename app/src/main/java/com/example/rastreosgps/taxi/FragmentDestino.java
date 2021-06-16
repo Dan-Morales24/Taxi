@@ -1,17 +1,27 @@
 package com.example.rastreosgps.taxi;
 
+import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.solver.widgets.WidgetContainer;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentContainerView;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.model.LatLng;
@@ -28,12 +38,15 @@ import java.util.Arrays;
 
 import static android.content.ContentValues.TAG;
 
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link FragmentDestino#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class FragmentDestino extends Fragment {
+
+
 
 
 
@@ -48,6 +61,8 @@ public class FragmentDestino extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private Object FragmentContainerView;
+     View f1;
 
     public FragmentDestino() {
         // Required empty public constructor
@@ -93,6 +108,27 @@ public class FragmentDestino extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_destino, container, false);
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+
         // Initialize the SDK
         Places.initialize(getActivity().getApplicationContext(), "AIzaSyBp_PG1Db2LqFLDk5PSm1XO_fBtR-C3F3o");
 
@@ -102,24 +138,40 @@ public class FragmentDestino extends Fragment {
 
         // Initialize the AutocompleteSupportFragment.
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
-               getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+                getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
         autocompleteFragment.setTypeFilter(TypeFilter.ESTABLISHMENT);
 
-        autocompleteFragment.setLocationBias(RectangularBounds.newInstance(
-                new LatLng(19.723209, -98.271563),new LatLng(19.108324, -98.173400)));
-        autocompleteFragment.setCountries("IN");
+
 
         // Specify the types of place data to return.
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
+
+
+
+
 
         // Set up a PlaceSelectionListener to handle the response.
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
-                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
+                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId()+ place.getLatLng());
+                LatLng destinationLatLng= place.getLatLng();
+                double destlat = destinationLatLng.latitude;
+                double destLon = destinationLatLng.longitude;
+                Toast.makeText(getContext(), "" + destlat + ',' + destLon, Toast.LENGTH_LONG).show();
+
+
+                //getActivity().onBackPressed();
+                Navigation.findNavController(getView()).navigate(R.id.fragmentMap);
+
+
+
+
+
             }
+
 
 
             @Override
@@ -130,8 +182,18 @@ public class FragmentDestino extends Fragment {
         });
 
 
-        return view;
+
+
+
+
     }
+
+
+
+
+
+
+
 
 
 }

@@ -1,30 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".FragmentMap">
 
-
-    <com.google.android.gms.maps.MapView
-        android:id="@+id/map_view"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragmentContainerView"
-        android:name="com.example.rastreosgps.taxi.ElegirDestino"
-        android:layout_width="355dp"
-        android:layout_height="211dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/map_view"
-        app:layout_constraintVertical_bias="0.876" />
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/map_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/textView7"
+            android:background="@color/colorBlack"
+            android:layout_width="313dp"
+            android:layout_height="53dp"
+            android:layout_marginTop="56dp"
+            android:text="tu ubicacion"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:clickable="true"
+            app:layout_constraintTop_toTopOf="@+id/map_view" />
+
+        <TextView
+            android:id="@+id/buscar"
+            android:background="@color/colorBlack"
+            android:layout_width="315dp"
+            android:layout_height="53dp"
+            android:layout_marginTop="28dp"
+            android:text="a donde te diriges"
+            android:clickable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.489"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+
+
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+  <FrameLayout
+      android:id="@+id/solicitar"
+      android:layout_width="match_parent"
+      android:layout_height="200dp"
+      app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+      android:background="@drawable/rounded"
+      >
+
+      <ImageView
+          android:layout_width="70dp"
+          android:layout_height="wrap_content"
+          android:src="@drawable/ic_baseline_remove_24"
+          android:scaleType="centerCrop"
+          android:layout_gravity="center|top"></ImageView>
+
+
+    </FrameLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,6 +1,7 @@
 package com.example.rastreosgps.taxi;
 
 import android.Manifest;
+import android.app.Notification;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -13,10 +14,14 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -27,12 +32,18 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 
 public class FragmentMap extends Fragment implements OnMapReadyCallback {
 GoogleMap mGoogleMap;
 MapView mMapView;
 View mView;
+TextView ubicacion;
+TextView Destino;
+FrameLayout frameLayout;
+
+private BottomSheetBehavior bottomSheetBehavior;
 
 
 
@@ -52,6 +63,13 @@ View mView;
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
     mView = inflater.inflate(R.layout.fragment_map, container, false);
+        // get the bottom sheet view
+         frameLayout = getActivity().findViewById(R.id.solicitar);
+
+       // bottomSheetBehavior = BottomSheetBehavior.from(frameLayout);
+
+
+
         getLocalization();
         return mView;
     }
@@ -69,6 +87,20 @@ View mView;
 
 
         }
+
+        Destino = getView().findViewById(R.id.buscar);
+
+        Destino.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                Navigation.findNavController(v).navigate(R.id.fragmentDestino);
+
+            }});
+
+
+
 
     }
 
@@ -137,5 +169,10 @@ View mView;
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 20, 100, locationListener);
 
     }
+
+
+
+
+
 
 }
