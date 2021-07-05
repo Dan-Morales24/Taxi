@@ -1,5 +1,6 @@
 package com.example.rastreosgps.taxi;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -34,6 +35,7 @@ public class Inicio_Sesion extends Fragment {
 
  private String usuario="";
  private String pass="";
+    private ProgressDialog progressDialog;
 
  private FirebaseAuth mAuth;
 
@@ -73,6 +75,8 @@ public class Inicio_Sesion extends Fragment {
 
                if(!usuario.isEmpty() && !pass.isEmpty()){
 
+                   progressDialog = ProgressDialog.show(getContext(), "Espera un poquito..",
+                           "Estoy verificando tus datos.", true);
                    loginUser();
                }
 

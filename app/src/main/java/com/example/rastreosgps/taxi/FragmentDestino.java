@@ -13,6 +13,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavAction;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import android.util.Log;
@@ -21,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
@@ -44,15 +47,8 @@ import static android.content.ContentValues.TAG;
  * Use the {@link FragmentDestino#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentDestino extends Fragment {
-
-
-
-
-
-
-
-
+public class FragmentDestino extends Fragment  {
+    
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -62,7 +58,10 @@ public class FragmentDestino extends Fragment {
     private String mParam1;
     private String mParam2;
     private Object FragmentContainerView;
-     View f1;
+    double destlat ;
+    double destLon;
+     TrazarRuta trazarRuta;
+     EditText editText;
 
     public FragmentDestino() {
         // Required empty public constructor
@@ -96,37 +95,22 @@ public class FragmentDestino extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-
-
     }
-
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_destino, container, false);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         return view;
     }
+
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
 
 
         // Initialize the SDK
@@ -140,12 +124,14 @@ public class FragmentDestino extends Fragment {
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
                 getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
-        autocompleteFragment.setTypeFilter(TypeFilter.ESTABLISHMENT);
+        //Filtro para mostrar Locality, Sublocality, PostalCode,Country
+        //autocompleteFragment.setTypeFilter(TypeFilter.REGIONS);
 
-
-
+        autocompleteFragment.setLocationRestriction(RectangularBounds.newInstance(
+                new LatLng(19.16313, -98.2809),
+                new LatLng(19.6967, -98.04332)));
         // Specify the types of place data to return.
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.NAME,Place.Field.ID, Place.Field.LAT_LNG));
 
 
 
@@ -156,23 +142,30 @@ public class FragmentDestino extends Fragment {
             @Override
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
-                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId()+ place.getLatLng());
-                LatLng destinationLatLng= place.getLatLng();
-                double destlat = destinationLatLng.latitude;
-                double destLon = destinationLatLng.longitude;
-                Toast.makeText(getContext(), "" + destlat + ',' + destLon, Toast.LENGTH_LONG).show();
+                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId() + place.getLatLng());
+                LatLng destinationLatLng = place.getLatLng();
+                destlat = destinationLatLng.latitude;
+                destLon = destinationLatLng.longitude;
+
+                //    Toast.makeText(getContext(), "Latitud: " +destlat+ "Longitud:" +destLon, Toast.LENGTH_SHORT).show();
+                editText = (EditText) view.findViewById(R.id.input);
+                String dato = editText.getText().toString();
+
+                Bundle bundle = new Bundle();
+                bundle.putDouble("latitud", (destlat));
+                bundle.putDouble("longitud",(destLon));
+                bundle.putString("Destino",(place.getName()));
+                bundle.putString("ejecutarMetodo",dato);
+                Navigation.findNavController(view).navigate(R.id.fragmentMap, bundle);
+                Navigation.findNavController(getView()).navigate(R.id.fragmentMap);
+               // trazarRuta.enviarDatos(dato);
 
 
                 //getActivity().onBackPressed();
-                Navigation.findNavController(getView()).navigate(R.id.fragmentMap);
-
-
 
 
 
             }
-
-
 
             @Override
             public void onError(Status status) {
@@ -186,7 +179,13 @@ public class FragmentDestino extends Fragment {
 
 
 
+
+
+
+
+
     }
+
 
 
 

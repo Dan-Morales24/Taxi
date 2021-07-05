@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: "androidx.navigation.safeargs"
 android {
 
     packagingOptions {
@@ -24,8 +25,8 @@ android {
         viewBinding true
     }
 }
-
 dependencies {
+    implementation 'com.google.maps.android:android-maps-utils:2.2.3'
     implementation platform('com.google.firebase:firebase-bom:28.0.1')
     implementation 'com.google.android.libraries.places:places:2.4.0'
     implementation 'com.google.firebase:firebase-analytics'
@@ -39,6 +40,7 @@ dependencies {
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
     def nav_version = "2.3.5"
 
+
     // Java language implementation
     implementation "androidx.navigation:navigation-fragment:$nav_version"
     implementation "androidx.navigation:navigation-ui:$nav_version"
@@ -46,6 +48,8 @@ dependencies {
     implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
     // Testing Navigation
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
+
+
 
     // Jetpack Compose Integration
     implementation "androidx.navigation:navigation-compose:1.0.0-alpha10"

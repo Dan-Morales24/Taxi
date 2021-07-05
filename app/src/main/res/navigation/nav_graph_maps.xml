@@ -22,6 +22,10 @@
         <action
             android:id="@+id/action_fragmentMap_to_elegirDestino"
             app:destination="@id/elegirDestino" />
+        <argument
+            android:name="nombre"
+            android:defaultValue="no llego el dato"
+            app:argType="string" />
         <action
             android:id="@+id/action_fragmentMap_to_fragmentDestino"
             app:destination="@id/fragmentDestino" />
