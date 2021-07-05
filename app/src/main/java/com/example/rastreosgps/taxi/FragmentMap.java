@@ -1,75 +1,95 @@
 package com.example.rastreosgps.taxi;
 
 import android.Manifest;
-import android.app.Notification;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.location.Address;
+import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
 import androidx.navigation.Navigation;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
+import android.widget.Button;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 
 
-public class FragmentMap extends Fragment implements OnMapReadyCallback {
-GoogleMap mGoogleMap;
-MapView mMapView;
-View mView;
-TextView ubicacion;
-TextView Destino;
-FrameLayout frameLayout;
+public class FragmentMap extends Fragment implements OnMapReadyCallback, DirectionFinderListener {
 
-private BottomSheetBehavior bottomSheetBehavior;
-
-
-
-
-    public FragmentMap() {
-        // Required empty public constructor
-    }
+    private static final int RESULT_OK = -1 ;
+    private List<Marker> originMarkers = new ArrayList<>();
+    private List<Marker> destinationMarkers = new ArrayList<>();
+    private List<Polyline> polylinePaths = new ArrayList<>();
+    private ProgressDialog progressDialog;
+    TextView mensaje2;
+    MapView mMapView;
+    View mView;
+    View vista, confirmar;
+    TextView Destino;
+    Button enviar;
+    private GoogleMap mGoogleMap;
+    Double longitudOrigen, latitudOrigen;
+    Boolean actualPosition = true;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
+
+        // We set the listener on the child fragmentManager
+        getChildFragmentManager().setFragmentResultListener("key", this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String key, @NonNull Bundle bundle) {
+
+
+            }
+        });
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-    mView = inflater.inflate(R.layout.fragment_map, container, false);
-        // get the bottom sheet view
-         frameLayout = getActivity().findViewById(R.id.solicitar);
-
-       // bottomSheetBehavior = BottomSheetBehavior.from(frameLayout);
-
-
-
+        mView = inflater.inflate(R.layout.fragment_map, container, false);
         getLocalization();
         return mView;
     }
@@ -79,37 +99,94 @@ private BottomSheetBehavior bottomSheetBehavior;
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        vista = getActivity().findViewById(R.id.solicitar);
+        confirmar = getActivity().findViewById(R.id.confirmar);
+        confirmar.setVisibility(View.GONE);
+        Places.initialize(getActivity().getApplicationContext(), "AIzaSyBp_PG1Db2LqFLDk5PSm1XO_fBtR-C3F3o");
         mMapView = (MapView) mView.findViewById(R.id.map_view);
-        if(mMapView != null){
-           mMapView.onCreate(null);
-           mMapView.onResume();
-           mMapView.getMapAsync(this);
+        if (mMapView != null) {
+            mMapView.onCreate(null);
+            mMapView.onResume();
+            mMapView.getMapAsync(this);
 
 
         }
-
-        Destino = getView().findViewById(R.id.buscar);
-
+        enviar = (Button)getView().findViewById(R.id.enviar);
+        confirmar = (ConstraintLayout)getView().findViewById(R.id.confirmar);
+        mensaje2 = (TextView) getView().findViewById(R.id.destino);
+        Destino = getView().findViewById(R.id.button_search);
         Destino.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+            //   Navigation.findNavController(v).navigate(R.id.fragmentDestino);
+            startAutocompleteActivity();
+            }
+       });
+
+       enviar.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+
+               vista.setVisibility(View.GONE);
+               confirmar.setVisibility(View.VISIBLE);
 
 
-                Navigation.findNavController(v).navigate(R.id.fragmentDestino);
-
-            }});
-
-
-
-
+           }
+       });
     }
 
 
+
+
+
+
+    public void startAutocompleteActivity(){
+
+        List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS,Place.Field.LAT_LNG,Place.Field.NAME);
+        Intent intent = new Autocomplete.IntentBuilder(
+                AutocompleteActivityMode.OVERLAY, fieldList).build(getContext());
+
+        startActivityForResult(intent,100);
+
+
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        
+        if(requestCode == 100 && resultCode == RESULT_OK ){
+
+
+
+            Place place = Autocomplete.getPlaceFromIntent(data);
+
+            Destino.setText("Destino: " + place.getAddress());
+
+            LatLng destinationLatLng = place.getLatLng();
+            double latitud = destinationLatLng.latitude;
+            double longitud = destinationLatLng.longitude;
+
+
+           // Toast.makeText(getContext(), "latitud : " +latitud+ " Longitud: "+longitud, Toast.LENGTH_SHORT).show();
+
+            sendRequest(latitud,longitud);
+
+            vista.setVisibility(View.VISIBLE);
+            confirmar.setVisibility(View.GONE);
+
+
+
+
+        }      
+        
+        
+    }
+
     private void getLocalization() {
         int permiso = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION);
-        if(permiso == PackageManager.PERMISSION_DENIED){
-            if(ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)){
-            }else{
+        if (permiso == PackageManager.PERMISSION_DENIED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+            } else {
                 ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             }
         }
@@ -119,6 +196,68 @@ private BottomSheetBehavior bottomSheetBehavior;
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        mGoogleMap.setMyLocationEnabled(true);
+        mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        mGoogleMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+            @Override
+            public void onMyLocationChange(Location location) {
+                if (actualPosition) {
+                    latitudOrigen = location.getLatitude();
+                    longitudOrigen = location.getLongitude();
+                    actualPosition = false;
+                    LatLng miPosition = new LatLng(latitudOrigen, longitudOrigen);
+                    mGoogleMap.addMarker(new MarkerOptions().position(miPosition).title("Yo estoy aqui"));
+                    CameraPosition cameraPosition = new CameraPosition.Builder()
+                            .target(new LatLng(latitudOrigen, longitudOrigen))
+                            .zoom(20)
+                            .build();
+                    mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                    setLocation(location);
+
+                }
+
+            }
+
+
+
+        });
+
+
+    }
+
+
+    public void setLocation (Location loc){
+
+        if(loc.getLatitude()!=0.0 && loc.getLongitude()!=0.0){
+
+            try {
+
+                Geocoder geocoder = new Geocoder(getContext() , Locale.getDefault());
+                List<Address> list  = geocoder.getFromLocation( loc.getLatitude(),loc.getLongitude(), 1);
+                if (!list.isEmpty()){
+                    Address dirCalle = list.get(0);
+                    Toast.makeText(getContext(), "Estoy en este lugar : " +dirCalle.getAddressLine(0), Toast.LENGTH_SHORT).show();
+                    mensaje2.setText("ubicacion: " + dirCalle.getAddressLine(0));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
+    }
+
+
+    private void sendRequest(double latitudDestino, double longitudDestino) {
+
+
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
 
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -130,49 +269,137 @@ private BottomSheetBehavior bottomSheetBehavior;
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        mGoogleMap.setMyLocationEnabled(true);
-        mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
+        Location location = locationManager.getLastKnownLocation(locationManager
+                .getBestProvider(criteria, false));
+        double latitude = location.getLatitude();
+        double longitud = location.getLongitude();
+        //String lotions = location.getName();
+        //  Toast.makeText(getContext(), "Estoy en : " +lotions, Toast.LENGTH_SHORT).show();
 
 
-        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        LocationListener locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                LatLng miUbicacion = new LatLng(location.getLatitude(), location.getLongitude());
-                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(miUbicacion));
-                CameraPosition cameraPosition = new CameraPosition.Builder()
-                        .target(miUbicacion)
-                        .zoom(20)
-                        .bearing(90)
-                        .tilt(45)
-                        .build();
-                mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+
+        try {
+            new DirectionFinder(this, latitude, longitud, latitudDestino,longitudDestino).execute();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    @Override
+    public void onDirectionFinderStart() {
+        progressDialog = ProgressDialog.show(getContext(), "Espera un momento..",
+                "Trazando ruta y calculando precios", true);
+        if (originMarkers != null) {
+            for (Marker marker : originMarkers) {
+                marker.remove();
+            }
+        }
+
+        if (destinationMarkers != null) {
+            for (Marker marker : destinationMarkers) {
+                marker.remove();
+            }
+        }
+
+        if (polylinePaths != null) {
+            for (Polyline polyline:polylinePaths ) {
+                polyline.remove();
+            }
+        }
+    }
+
+    @Override
+    public void onDirectionFinderSuccess(List<Route> routes) {
+
+        double tarifaBase=30;
+        double tiempoMin;
+        double distanciaKil;
+        double costoxKilometro;
+        double costoxMinuto;
+        double CostoTotal;
+        progressDialog.dismiss();
+        polylinePaths = new ArrayList<>();
+        originMarkers = new ArrayList<>();
+        destinationMarkers = new ArrayList<>();
+
+        for (Route route : routes) {
+
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(route.startLocation, 16));
+             ((TextView) getView().findViewById(R.id.tiempo)).setText(route.duration.text);
+             ((TextView) getView().findViewById(R.id.kilometros)).setText(route.distance.text);
+
+            double tiempo = route.duration.value;
+            double kilometros = route.distance.value;
+
+            tiempoMin = tiempo/60;
+            distanciaKil = kilometros/1000;
+
+            costoxKilometro = distanciaKil * 4.8;
+            costoxMinuto = tiempoMin * 1.8;
+            CostoTotal = costoxKilometro + costoxMinuto;
+            if(CostoTotal >30){
+
+                ((TextView) getView().findViewById(R.id.costo)).setText(""+CostoTotal+" Pesos");
+
+            }
+
+            else{
+
+                ((TextView) getView().findViewById(R.id.costo)).setText(""+tarifaBase+" Pesos");
+
 
             }
 
 
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
+            calcularCosto(tiempo,kilometros);
 
-            }
+            Toast.makeText(getContext(), "tiempo : " +tiempo+ " Longitud: "+kilometros, Toast.LENGTH_SHORT).show();
 
-            @Override
-            public void onProviderEnabled(String provider) {
 
-            }
+            //  originMarkers.add(mGoogleMap.addMarker(new MarkerOptions()
+            //        .icon(BitmapDescriptorFactory.fromResource(R.drawable.end))
+            //      .title(route.startAddress)
+            //    .position(route.startLocation)));
+            destinationMarkers.add(mGoogleMap.addMarker(new MarkerOptions()
+                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.finish))
+                    .title(route.endAddress)
+                    .position(route.endLocation)));
 
-            @Override
-            public void onProviderDisabled(String provider) {
+            PolylineOptions polylineOptions = new PolylineOptions().
+                    geodesic(true).
+                    color(Color.BLUE).
+                    width(10);
 
-            }
-        };
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 20, 100, locationListener);
+            for (int i = 0; i < route.points.size(); i++)
+                polylineOptions.add(route.points.get(i));
+
+            polylinePaths.add(mGoogleMap.addPolyline(polylineOptions));
+        }
+    }
+
+
+
+
+    public void calcularCosto(double tiempo, double kilometros){
+
+
+
+
+
 
     }
 
 
 
 
-
-
 }
+
+
+
+
+
+
+
