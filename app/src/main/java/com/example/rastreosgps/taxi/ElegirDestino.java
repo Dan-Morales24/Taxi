@@ -27,7 +27,7 @@ import static android.content.ContentValues.TAG;
  * Use the {@link ElegirDestino#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ElegirDestino extends Fragment {
+    public class ElegirDestino extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -91,18 +91,10 @@ public class ElegirDestino extends Fragment {
 
 
         Buscar =(Button)view.findViewById(R.id.Destino);
-
         Buscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-
-
-
-
                 Navigation.findNavController(v).navigate(R.id.fragmentMap);
-
             }
         });
 

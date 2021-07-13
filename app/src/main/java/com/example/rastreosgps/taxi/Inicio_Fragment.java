@@ -1,5 +1,8 @@
 package com.example.rastreosgps.taxi;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,6 +21,9 @@ import android.widget.Button;
 
 public class Inicio_Fragment extends Fragment {
 
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor datos_Activity2;
+
    public Inicio_Fragment(){
        //require empty public constructor
    }
@@ -26,6 +32,13 @@ public class Inicio_Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        preferences = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
+        if(preferences.contains("usuario")){
+
+            startActivity(new Intent(getContext(), MainActivityMaps.class));
+            getActivity().finish();
+
+        }
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_inicio, container, false);
     }
@@ -33,11 +46,7 @@ public class Inicio_Fragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull  View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         Button btn1=view.findViewById(R.id.btn1);
-
-
-
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

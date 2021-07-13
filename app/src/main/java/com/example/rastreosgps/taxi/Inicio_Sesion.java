@@ -1,11 +1,14 @@
 package com.example.rastreosgps.taxi;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -27,18 +30,17 @@ import com.google.firebase.auth.FirebaseAuth;
  * Use the {@link Inicio_Sesion# newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Inicio_Sesion extends Fragment {
 
- EditText Usuario;
+public class Inicio_Sesion extends Fragment {
+  private SharedPreferences preferences;
+    private SharedPreferences.Editor datos_Activity2;
+  EditText Usuario;
  EditText Pass;
   Button LoginI;
-
  private String usuario="";
  private String pass="";
-    private ProgressDialog progressDialog;
-
+ private ProgressDialog progressDialog;
  private FirebaseAuth mAuth;
-
     public Inicio_Sesion() {
         // Required empty public constructor
     }
@@ -49,6 +51,8 @@ public class Inicio_Sesion extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+
     }
 
     @Override
@@ -56,6 +60,9 @@ public class Inicio_Sesion extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
+        preferences = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
+        datos_Activity2 = preferences.edit();
+        
 
 
 
@@ -88,22 +95,17 @@ public class Inicio_Sesion extends Fragment {
            }
        });
 
-
-
-
-
-
         return view;
     }
 
-
-
-    private void loginUser(){
+    public void loginUser(){
     mAuth.signInWithEmailAndPassword(usuario, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
         @Override
         public void onComplete(@NonNull Task<AuthResult> task) {
             if(task.isSuccessful()){
 
+                datos_Activity2.putString("usuario",usuario);
+                datos_Activity2.commit();
                 Toast.makeText(getContext(), "La Usuario es correcto ", Toast.LENGTH_SHORT).show();
 
                 getActivity().finish();
@@ -120,27 +122,17 @@ public class Inicio_Sesion extends Fragment {
 
     }
 
-
-
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         Button btnAtrasSesion = view.findViewById(R.id.btnAtrasSesion);
-
         btnAtrasSesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Navigation.findNavController(v).navigate(R.id.fragmentLogin);
             }
         });
-
-
-
     }
-
-
-
 
     }

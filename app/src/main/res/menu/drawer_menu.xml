@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="principal">
+        <menu>
+            <item
+                android:id="@+id/home"
+                android:icon="@drawable/ic_home"
+                android:title="Inicio"
+                ></item>
+
+            <item
+                android:id="@+id/viajes"
+                android:icon="@drawable/ic_car"
+                android:title="Viajes"
+                ></item>
+
+
+        </menu>
+
+    </item>
+
+
+    <item android:title="secundario">
+        <menu>
+
+            <item
+                android:id="@+id/close"
+                android:icon="@drawable/ic_power"
+                android:title="Cerrar Sesion"
+                ></item>
+
+        </menu>
+
+    </item>
+
+</menu>

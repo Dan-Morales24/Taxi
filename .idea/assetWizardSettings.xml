@@ -364,7 +364,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material/icons/materialicons/location_on/baseline_location_on_24.xml" />
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material/icons/materialicons/power_settings_new/baseline_power_settings_new_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -374,8 +374,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="ee0c0c" />
-                            <entry key="outputName" value="fin" />
+                            <entry key="color" value="0c4cee" />
+                            <entry key="outputName" value="ic_power" />
                             <entry key="sourceFile" value="C:\Users\Rastreos GPS\AndroidStudioProjects\Taxi" />
                           </map>
                         </option>

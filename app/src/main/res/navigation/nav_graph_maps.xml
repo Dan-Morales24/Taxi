@@ -6,29 +6,14 @@
     app:startDestination="@id/elegirDestino">
 
     <fragment
-        android:id="@+id/fragmentDestino"
-        android:name="com.example.rastreosgps.taxi.FragmentDestino"
-        android:label="fragment_destino"
-        tools:layout="@layout/fragment_destino" >
-        <action
-            android:id="@+id/action_fragmentDestino_to_fragmentMap"
-            app:destination="@id/fragmentMap" />
-    </fragment>
-    <fragment
         android:id="@+id/fragmentMap"
         android:name="com.example.rastreosgps.taxi.FragmentMap"
         android:label="fragment_map"
         tools:layout="@layout/fragment_map" >
-        <action
-            android:id="@+id/action_fragmentMap_to_elegirDestino"
-            app:destination="@id/elegirDestino" />
         <argument
             android:name="nombre"
             android:defaultValue="no llego el dato"
             app:argType="string" />
-        <action
-            android:id="@+id/action_fragmentMap_to_fragmentDestino"
-            app:destination="@id/fragmentDestino" />
     </fragment>
     <fragment
         android:id="@+id/elegirDestino"
@@ -36,7 +21,15 @@
         android:label="elegir_destino"
         tools:layout="@layout/elegir_destino" >
         <action
-            android:id="@+id/action_elegirDestino_to_fragmentMap"
+            android:id="@+id/action_elegirDestino_to_fragmentViewListener"
+            app:destination="@id/fragmentViewListener" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentViewListener"
+        android:name="com.example.rastreosgps.taxi.FragmentViewListener"
+        android:label="FragmentViewListener" >
+        <action
+            android:id="@+id/action_fragmentViewListener_to_fragmentMap"
             app:destination="@id/fragmentMap" />
     </fragment>
 </navigation>
