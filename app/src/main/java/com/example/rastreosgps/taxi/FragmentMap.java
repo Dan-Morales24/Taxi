@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Path;
@@ -66,7 +67,8 @@ import java.util.Optional;
 
 public class FragmentMap extends Fragment implements OnMapReadyCallback, DirectionFinderListener, NavigationView.OnNavigationItemSelectedListener {
 
-
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor datos_Activity2;
 
     Button expand;
     DrawerLayout drawerLayout;
@@ -92,6 +94,13 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //sharedPreference
+        preferences = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
+        datos_Activity2 = preferences.edit();
+
+
+
+        // control del boton de retoceso
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -105,8 +114,6 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
-
-
         // We set the listener on the child fragmentManager
         getChildFragmentManager().setFragmentResultListener("key", this, new FragmentResultListener() {
             @Override
@@ -115,13 +122,11 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
 
             }
         });
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
 
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_map, container, false);
@@ -133,10 +138,13 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //llamada al navigation view para mostrarlo
         expand = getView().findViewById(R.id.expandir);
         drawerLayout = getView().findViewById(R.id.drawer_layout);
         navigationView = getView().findViewById(R.id.nav_view);
+        //colocar enfrente del fragmento el navigation view para poder controlarlo
         navigationView.bringToFront();
+        //
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(getActivity(), drawerLayout,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
@@ -183,23 +191,27 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
        });
     }
 
-   /* @Override
-    public void onBackPressed() {
+    public void mostrarDatos(){
 
-        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
-            drawerLayout.closeDrawer(GravityCompat.START);
-            return true;
-        }
+        String usario = preferences.getString("userP","null");
 
-            else{
+    }
 
-            return false;
-        }
+
+    public void cerrarSesion() {
+
+        datos_Activity2.clear();
+        datos_Activity2.commit();
+
+        getActivity().finish();
+        startActivity(new Intent(getContext(), MainActivity.class));
+
 
 
     }
 
-*/
+
+
 
     public void startAutocompleteActivity(){
 
@@ -266,6 +278,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
             }
         });
     }
+
 
 
     public void setLocation (Location loc){
@@ -362,48 +375,48 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
                     if(CostoTotal >30){
                         ((TextView) getView().findViewById(R.id.costo)).setText(""+CostoTotal+" Pesos");
                     }
-
                     else{
                         ((TextView) getView().findViewById(R.id.costo)).setText(""+tarifaBase+" Pesos");
-                    }
+                     }
+
                     Toast.makeText(getContext(), "tiempo : " +tiempo+ " Longitud: "+kilometros, Toast.LENGTH_SHORT).show();
 
 
-                      originMarkers.add(mGoogleMap.addMarker(new MarkerOptions()
-                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.finish))
-                          .title(route.startAddress)
-                        .position(route.startLocation)));
+                      originMarkers.add(mGoogleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.mipmap.finish))
+                              .title(route.startAddress)
+                              .position(route.startLocation)));
                     destinationMarkers.add(mGoogleMap.addMarker(new MarkerOptions()
                             .icon(BitmapDescriptorFactory.fromResource(R.mipmap.finish))
                             .title(route.endAddress)
                             .position(route.endLocation)));
                     PolylineOptions polylineOptions = new PolylineOptions().
                             geodesic(true).
-                            color(Color.BLUE).
+                            color(Color.BLACK).
                             width(10);
 
-                    for (int i = 0; i < route.points.size(); i++)
-                        polylineOptions.add(route.points.get(i));
-                    polylinePaths.add(mGoogleMap.addPolyline(polylineOptions));
-                }
-    }
+                          for (int i = 0; i < route.points.size(); i++)
+                              polylineOptions.add(route.points.get(i));
+                              polylinePaths.add(mGoogleMap.addPolyline(polylineOptions));
+                          }
+                        }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-      switch (item.getItemId()){
+                        @Override
+                        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                          switch (item.getItemId()){
 
-          case R.id.home:
-              Toast.makeText(getContext(), "inicio", Toast.LENGTH_SHORT).show();
-              break;
+                              case R.id.home:
+                                  Toast.makeText(getContext(), "inicio", Toast.LENGTH_SHORT).show();
+                                  break;
 
-          case R.id.viajes:
-              Toast.makeText(getContext(), "viajes realizados", Toast.LENGTH_SHORT).show();
-              break;
+                              case R.id.viajes:
+                                  Toast.makeText(getContext(), "viajes realizados", Toast.LENGTH_SHORT).show();
+                                  break;
 
-          case R.id.close:
-              Toast.makeText(getContext(), "cerar sesion", Toast.LENGTH_SHORT).show();
-              break;
-      }
-        return false;
-    }
-}
+                              case R.id.close:
+                                  Toast.makeText(getContext(), "cerar sesion", Toast.LENGTH_SHORT).show();
+                                 cerrarSesion();
+                                  break;
+                          }
+                            return false;
+                        }
+                    }

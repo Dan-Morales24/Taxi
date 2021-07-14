@@ -62,17 +62,12 @@ public class Inicio_Sesion extends Fragment {
 
         preferences = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
         datos_Activity2 = preferences.edit();
-        
-
-
-
        View view= inflater.inflate(R.layout.fragment_inicio__sesion, container, false);
 
         mAuth = FirebaseAuth.getInstance();
        Usuario =(EditText) view.findViewById(R.id.Inicio_Correo);
        Pass =(EditText) view.findViewById(R.id.Inicio_Password);
        LoginI=(Button) view.findViewById(R.id.Inicio_Login);
-
        LoginI.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
