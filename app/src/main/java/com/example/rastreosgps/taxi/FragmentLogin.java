@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -32,7 +33,7 @@ public class FragmentLogin extends Fragment {
     public void onViewCreated(@NonNull  View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Button btnAtras=view.findViewById(R.id.btnAtras);
+        TextView btnAtras=view.findViewById(R.id.btnAtras);
         Button btnSig=view.findViewById(R.id.btnSig);
         Button btnIniciar=view.findViewById(R.id.btnInciar);
 

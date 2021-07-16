@@ -18,12 +18,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,6 +53,8 @@ public class Inicio_Sesion extends Fragment {
  private String pass="";
  private ProgressDialog progressDialog;
  private FirebaseAuth mAuth;
+    FirebaseFirestore fStore;
+    DatabaseReference mDatabase;
     public Inicio_Sesion() {
         // Required empty public constructor
     }
@@ -60,18 +74,17 @@ public class Inicio_Sesion extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        preferences = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
-        datos_Activity2 = preferences.edit();
+
        View view= inflater.inflate(R.layout.fragment_inicio__sesion, container, false);
 
-        mAuth = FirebaseAuth.getInstance();
+       mAuth = FirebaseAuth.getInstance();
+       mDatabase = FirebaseDatabase.getInstance().getReference();
        Usuario =(EditText) view.findViewById(R.id.Inicio_Correo);
        Pass =(EditText) view.findViewById(R.id.Inicio_Password);
        LoginI=(Button) view.findViewById(R.id.Inicio_Login);
        LoginI.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-
                usuario = Usuario.getText().toString();
                pass = Pass.getText().toString();
 
@@ -93,19 +106,52 @@ public class Inicio_Sesion extends Fragment {
         return view;
     }
 
+    private void getUserInfo(){
+
+        String userID = mAuth.getCurrentUser().getUid();
+        mDatabase.child("Users").child(userID).addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if(dataSnapshot.exists()){
+
+                    String nombre = dataSnapshot.child("Nombre").getValue(String.class);
+                    String correo = dataSnapshot.child("Correo").getValue(String.class);
+                    String numero = dataSnapshot.child("Numero").getValue(String.class);
+                    preferences = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
+                    datos_Activity2 = preferences.edit();
+                    datos_Activity2.putString("Usuario", nombre);
+                    datos_Activity2.putString("Correo", correo);
+                    datos_Activity2.putString("Numero", numero);
+                    datos_Activity2.commit();
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+                Toast.makeText(getContext(), "ocurrio un error: "+error , Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+
+
     public void loginUser(){
+
     mAuth.signInWithEmailAndPassword(usuario, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
         @Override
-        public void onComplete(@NonNull Task<AuthResult> task) {
-            if(task.isSuccessful()){
 
-                datos_Activity2.putString("usuario",usuario);
-                datos_Activity2.commit();
-                Toast.makeText(getContext(), "La Usuario es correcto ", Toast.LENGTH_SHORT).show();
+        public void onComplete(@NonNull Task<AuthResult> task) {
+            if(task.isSuccessful()) {
+                getUserInfo();
 
                 getActivity().finish();
                 startActivity(new Intent(getContext(), MainActivityMaps.class));
-
             }
                 else {
 
@@ -121,7 +167,7 @@ public class Inicio_Sesion extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Button btnAtrasSesion = view.findViewById(R.id.btnAtrasSesion);
+        TextView btnAtrasSesion = view.findViewById(R.id.btnAtrasSesion);
         btnAtrasSesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -15,8 +15,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,6 +50,7 @@ public class FragmentRegistro extends Fragment {
     String SPass = "";
 
     FirebaseAuth mAuth;
+    FirebaseFirestore fStore;
     DatabaseReference mDatabase;
 
     public FragmentRegistro() {
@@ -73,7 +81,6 @@ public class FragmentRegistro extends Fragment {
         Correo = (EditText) view.findViewById(R.id.editTextCorreo);
         pass = (EditText) view.findViewById(R.id.editTextContrasena);
         Login = (Button) view.findViewById(R.id.Registrarse);
-
         Login.setOnClickListener(new View.OnClickListener() {
 
 
@@ -126,9 +133,9 @@ public class FragmentRegistro extends Fragment {
                             map.put("Correo",SCorreo);
                             map.put("Password",SPass);
 
-                            String id = mAuth.getCurrentUser().getUid();
 
-                            mDatabase.child("Users").child(id).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        String id = mAuth.getCurrentUser().getUid();
+                        mDatabase.child("Users").child(id).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task2) {
 
@@ -174,7 +181,7 @@ public class FragmentRegistro extends Fragment {
 
 
 
-        Button btnAtrasRegistro = view.findViewById(R.id.btnAtrasRegistro);
+        TextView btnAtrasRegistro = view.findViewById(R.id.btnAtrasRegistro);
         btnAtrasRegistro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

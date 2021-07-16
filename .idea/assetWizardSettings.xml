@@ -24,7 +24,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="imagePath" value="C:\Users\juand\AppData\Local\Temp\baseline_location_on_24.xml" />
+                                                <entry key="imagePath" value="C:\Users\juand\AppData\Local\Temp\baseline_menu_24.xml" />
                                                 <entry key="opacityPercent" value="80" />
                                               </map>
                                             </option>
@@ -36,7 +36,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material/icons/materialicons/location_on/baseline_location_on_24.xml" />
+                                                <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material/icons/materialicons/menu/baseline_menu_24.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -49,6 +49,7 @@
                                               <map>
                                                 <entry key="color" value="000000" />
                                                 <entry key="opacityPercent" value="80" />
+                                                <entry key="paddingPercent" value="-10" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -80,9 +81,10 @@
                                   </option>
                                   <option name="values">
                                     <map>
+                                      <entry key="assetType" value="IMAGE" />
                                       <entry key="outputName" value="final" />
                                       <entry key="theme" value="CUSTOM" />
-                                      <entry key="themeColor" value="ef0202" />
+                                      <entry key="themeColor" value="f6f6f6" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -93,12 +95,35 @@
                                 <PersistentState>
                                   <option name="children">
                                     <map>
+                                      <entry key="backgroundImage">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="scalingPercent" value="0" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
                                       <entry key="foregroundClipArt">
                                         <value>
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="imagePath" value="C:\Users\juand\AppData\Local\Temp\ic_android_black_24dp.xml" />
+                                                <entry key="color" value="00ba6b" />
+                                                <entry key="imagePath" value="C:\Users\juand\AppData\Local\Temp\baseline_location_on_24.xml" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
+                                      <entry key="foregroundClipartAsset">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material/icons/materialicons/location_on/baseline_location_on_24.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -139,6 +164,14 @@
                                       </entry>
                                     </map>
                                   </option>
+                                  <option name="values">
+                                    <map>
+                                      <entry key="backgroundColor" value="3ddc4d" />
+                                      <entry key="foregroundAssetType" value="CLIP_ART" />
+                                      <entry key="legacyIconShape" value="NONE" />
+                                      <entry key="outputName" value="ic_launcher_inicio" />
+                                    </map>
+                                  </option>
                                 </PersistentState>
                               </value>
                             </entry>
@@ -152,9 +185,9 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="color" value="ff0000" />
+                                                <entry key="color" value="03b553" />
                                                 <entry key="imagePath" value="C:\Users\juand\AppData\Local\Temp\baseline_location_on_24.xml" />
-                                                <entry key="paddingPercent" value="-10" />
+                                                <entry key="paddingPercent" value="-5" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -208,8 +241,8 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="cropped" value="true" />
-                                      <entry key="outputName" value="finish" />
+                                      <entry key="iconShape" value="CIRCLE" />
+                                      <entry key="outputName" value="menu" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -336,11 +369,6 @@
                             </entry>
                           </map>
                         </option>
-                        <option name="values">
-                          <map>
-                            <entry key="outputIconType" value="ACTIONBAR" />
-                          </map>
-                        </option>
                       </PersistentState>
                     </value>
                   </entry>
@@ -364,7 +392,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material/icons/materialicons/power_settings_new/baseline_power_settings_new_24.xml" />
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material/icons/materialicons/account_circle/baseline_account_circle_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -374,8 +402,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="0c4cee" />
-                            <entry key="outputName" value="ic_power" />
+                            <entry key="color" value="ffffff" />
+                            <entry key="outputName" value="ic_account" />
                             <entry key="sourceFile" value="C:\Users\Rastreos GPS\AndroidStudioProjects\Taxi" />
                           </map>
                         </option>

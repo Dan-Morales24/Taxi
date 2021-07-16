@@ -5,21 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ElegirDestino"
-    android:background="#2438E1"
+    android:background="#000000"
     >
 
     <Button
         android:id="@+id/Destino"
-        android:layout_width="152dp"
-        android:layout_height="66dp"
+        android:layout_width="132dp"
+        android:layout_height="64dp"
         android:layout_marginStart="37dp"
 
         android:layout_marginTop="34dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="428dp"
         android:background="@drawable/boton_redondo"
-        android:textColor="#ffffff"
         android:text="Pedir un Taxi"
+        android:textColor="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/destino"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,15 +28,15 @@
 
     <Button
         android:id="@+id/destino"
-        android:layout_width="152dp"
-        android:layout_height="66dp"
+        android:layout_width="132dp"
+        android:layout_height="64dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="34dp"
         android:layout_marginEnd="37dp"
         android:layout_marginBottom="428dp"
         android:background="@drawable/boton_redondo"
+        android:text="Pedir una moto"
         android:textColor="#ffffff"
-        android:text="Enviar un paquete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/Destino"
@@ -45,31 +45,56 @@
 
     <TextView
         android:id="@+id/textView5"
-        android:layout_width="323dp"
-        android:layout_height="57dp"
+        android:layout_width="304dp"
+        android:layout_height="58dp"
         android:layout_marginTop="24dp"
         android:text="Elije un servicio para continuar"
         android:textColor="@color/colorWhite"
         android:textSize="22dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.422"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6"
+        app:layout_constraintTop_toBottomOf="@+id/persona"
         tools:ignore="MissingConstraints" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/persona"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
-        android:text="Buenas noches: Juan Daniel"
+        android:text="Buenas noches"
         android:textColor="@color/colorWhite"
         android:textSize="28dp"
         app:layout_constraintBottom_toTopOf="@+id/textView5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.395"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="84dp"
+        android:layout_marginEnd="84dp"
+        android:layout_marginBottom="15dp"
+        android:text="Terminos y condiciones de uso"
+        android:textColor="#ffff"
+        app:layout_constraintBottom_toTopOf="@+id/textView13"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="98dp"
+        android:layout_marginEnd="98dp"
+        android:layout_marginBottom="33dp"
+        android:text="Copyright 2021 Taxi Driver"
+        android:textColor="#ffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

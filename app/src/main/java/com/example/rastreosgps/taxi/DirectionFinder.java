@@ -25,8 +25,6 @@ import java.util.List;
 public class DirectionFinder {
 
 
-
-
     //https://maps.googleapis.com/maps/api/directions/json?origin=parametroLatitud,parametroLongitud&destination=parametroLatitud,parametroLongitud
 
     private static final String DIRECTION_URL_API = "https://maps.googleapis.com/maps/api/directions/json?";

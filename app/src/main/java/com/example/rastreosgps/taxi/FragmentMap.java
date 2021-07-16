@@ -38,6 +38,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -47,6 +48,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -69,8 +71,8 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
 
     private SharedPreferences preferences;
     private SharedPreferences.Editor datos_Activity2;
-
-    Button expand;
+    TextView nombreUsu, correo;
+    TextView expand;
     DrawerLayout drawerLayout;
     Toolbar toolbar;
     NavigationView navigationView;
@@ -93,12 +95,6 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //sharedPreference
-        preferences = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
-        datos_Activity2 = preferences.edit();
-
-
 
         // control del boton de retoceso
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
@@ -138,10 +134,28 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //sharedPreference
+        preferences = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
+        datos_Activity2 = preferences.edit();
+        String nombre = preferences.getString("Usuario","null");
+        String correo = preferences.getString("Correo","null");
+        String numeroTelefono = preferences.getString("Numero","null");
+        //////////////////
+
+       // View navHeader = navigationView.getHeaderView(0);
+       // nombreUsu = navHeader.findViewById(R.id.NombreUsuario);
+       // nombreUsu.setText(nombre);
         //llamada al navigation view para mostrarlo
         expand = getView().findViewById(R.id.expandir);
         drawerLayout = getView().findViewById(R.id.drawer_layout);
         navigationView = getView().findViewById(R.id.nav_view);
+
+        // inflar Header y pasar datos para mostrarlos
+        View Cliente = navigationView.getHeaderView(0);
+        ((TextView) Cliente.findViewById(R.id.NombreUsuario)).setText(nombre);
+        ((TextView) Cliente.findViewById(R.id.NombreCorreo)).setText(correo);
+        //////////////////////////////////////////////////////////
+
         //colocar enfrente del fragmento el navigation view para poder controlarlo
         navigationView.bringToFront();
         //
@@ -191,27 +205,13 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
        });
     }
 
-    public void mostrarDatos(){
-
-        String usario = preferences.getString("userP","null");
-
-    }
-
-
     public void cerrarSesion() {
-
         datos_Activity2.clear();
         datos_Activity2.commit();
-
         getActivity().finish();
         startActivity(new Intent(getContext(), MainActivity.class));
 
-
-
     }
-
-
-
 
     public void startAutocompleteActivity(){
 
@@ -227,7 +227,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
         if(requestCode == 100 && resultCode == RESULT_OK ){
 
             Place place = Autocomplete.getPlaceFromIntent(data);
-            Destino.setText("Destino: " + place.getAddress());
+            Destino.setText(place.getAddress());
             LatLng destinationLatLng = place.getLatLng();
             double latitud = destinationLatLng.latitude;
             double longitud = destinationLatLng.longitude;
@@ -289,7 +289,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
                 if (!list.isEmpty()){
                     Address dirCalle = list.get(0);
                     Toast.makeText(getContext(), "Estoy en este lugar : " +dirCalle.getAddressLine(0), Toast.LENGTH_SHORT).show();
-                    mensaje2.setText("ubicacion: " + dirCalle.getAddressLine(0));
+                    mensaje2.setText(dirCalle.getAddressLine(0));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -361,7 +361,8 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
         destinationMarkers = new ArrayList<>();
 
         for (Route route : routes) {
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(route.startLocation, 16));
+
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom( route.endLocation,9));
              ((TextView) getView().findViewById(R.id.tiempo)).setText(route.duration.text);
              ((TextView) getView().findViewById(R.id.kilometros)).setText(route.distance.text);
                 double tiempo = route.duration.value;
@@ -379,14 +380,14 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
                         ((TextView) getView().findViewById(R.id.costo)).setText(""+tarifaBase+" Pesos");
                      }
 
-                    Toast.makeText(getContext(), "tiempo : " +tiempo+ " Longitud: "+kilometros, Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getContext(), "tiempo : " +tiempo+ " Longitud: "+kilometros, Toast.LENGTH_SHORT).show();
 
 
-                      originMarkers.add(mGoogleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.mipmap.finish))
+                      originMarkers.add(mGoogleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.primero))
                               .title(route.startAddress)
                               .position(route.startLocation)));
                     destinationMarkers.add(mGoogleMap.addMarker(new MarkerOptions()
-                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.finish))
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.segundo))
                             .title(route.endAddress)
                             .position(route.endLocation)));
                     PolylineOptions polylineOptions = new PolylineOptions().

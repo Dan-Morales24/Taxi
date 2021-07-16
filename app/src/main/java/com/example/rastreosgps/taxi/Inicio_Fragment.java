@@ -33,8 +33,7 @@ public class Inicio_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         preferences = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
-        if(preferences.contains("usuario")){
-
+        if(preferences.contains("Usuario")){
             startActivity(new Intent(getContext(), MainActivityMaps.class));
             getActivity().finish();
 

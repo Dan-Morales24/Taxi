@@ -1,6 +1,8 @@
 package com.example.rastreosgps.taxi;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,7 +19,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import static android.content.ContentValues.TAG;
 
@@ -29,6 +36,8 @@ import static android.content.ContentValues.TAG;
  */
     public class ElegirDestino extends Fragment {
 
+    TextView persona;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -38,6 +47,7 @@ import static android.content.ContentValues.TAG;
     private String mParam1;
     private String mParam2;
     Button Buscar;
+    String nombre;
 
     public ElegirDestino() {
         // Required empty public constructor
@@ -73,6 +83,8 @@ import static android.content.ContentValues.TAG;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.elegir_destino, container, false);
         ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, /* Este codigo es para identificar tu request */ 1);
@@ -86,6 +98,26 @@ import static android.content.ContentValues.TAG;
         super.onViewCreated(view, savedInstanceState);
 
 
+        Calendar calendario = Calendar.getInstance();
+        int hora = calendario.get(Calendar.HOUR_OF_DAY);
+        persona = getView().findViewById(R.id.persona);
+
+
+
+        if ((hora >= 6) && (hora <= 11)) {
+            persona.setText("Buenos días");
+        }
+
+        if ((hora >= 12) && (hora <= 19)) {
+            persona.setText("Buenas tardes");
+        }
+
+        if (((hora >= 20) && (hora < 24)) || ((hora <= 5) && (hora >= 0))) {
+            persona.setText("Buenas noches");
+        }
+
+
+        //////////////////
         Buscar =(Button)view.findViewById(R.id.Destino);
         Buscar.setOnClickListener(new View.OnClickListener() {
             @Override

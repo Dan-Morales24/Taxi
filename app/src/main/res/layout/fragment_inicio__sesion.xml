@@ -4,15 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2438E1"
+    android:background="#009ADE"
     tools:context=".Inicio_Sesion">
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="144dp"
-
+        android:layout_marginTop="92dp"
         android:text="Iniciar Sesión"
         android:textColor="@color/colorWhite"
         android:textSize="40dp"
@@ -23,13 +22,18 @@
 
     <EditText
         android:id="@+id/Inicio_Correo"
+        style="@style/Widget.AppCompat.Light.AutoCompleteTextView"
         android:layout_width="324dp"
         android:layout_height="39dp"
-        android:layout_marginTop="92dp"
+        android:layout_marginTop="83dp"
+        android:background="@drawable/custom_input"
+        android:drawableStart="@drawable/ic_email"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:textColorHint="@color/colorWhite"
+        android:gravity="center"
         android:hint="Correo electronico/Numero"
+        android:inputType="textPersonName"
+        android:paddingStart="12dp"
+        android:paddingEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,11 +45,13 @@
         android:layout_width="325dp"
         android:layout_height="38dp"
         android:layout_marginTop="20dp"
-        android:ems="10"
-        android:hint="password"
-
+        android:hint="Contraseña"
         android:inputType="textPassword"
-        android:textColorHint="@color/colorWhite"
+        android:background="@drawable/custom_input"
+        android:drawableStart="@drawable/ic_key"
+        android:gravity="center"
+        android:paddingStart="12dp"
+        android:paddingEnd="35dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Inicio_Correo" />
@@ -55,24 +61,58 @@
         android:layout_width="312dp"
         android:layout_height="62dp"
         android:layout_marginTop="180dp"
+        android:layout_marginBottom="24dp"
         android:background="@drawable/boton_redondo"
         android:text="Iniciar Sesion"
+        android:textColor="#ffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Inicio_Password"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.704" />
 
-    <Button
+    <TextView
         android:id="@+id/btnAtrasSesion"
         android:layout_width="61dp"
         android:layout_height="34dp"
         android:layout_marginTop="48dp"
-        android:background="@color/colorBlack"
-        android:text="atras"
+        android:clickable="true"
+        android:drawableLeft="@drawable/ic_baseline_west_24"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.04"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="49dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="201dp"
+        android:textColor="#ffff"
+        android:text="¿Olvidaste tu contraseña?"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Inicio_Password" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="149dp"
+        android:layout_marginTop="58dp"
+        android:layout_marginEnd="152dp"
+        android:layout_marginBottom="223dp"
+        android:text="Inicia sesión con:"
+        android:textColor="#ffff"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toTopOf="@+id/Inicio_Login"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.516"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6"
+        app:layout_constraintVertical_bias="0.2" />
 </androidx.constraintlayout.widget.ConstraintLayout>
