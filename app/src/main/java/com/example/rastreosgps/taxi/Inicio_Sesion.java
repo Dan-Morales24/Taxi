@@ -111,6 +111,7 @@ public class Inicio_Sesion extends Fragment {
         String userID = mAuth.getCurrentUser().getUid();
         mDatabase.child("Users").child(userID).addValueEventListener(new ValueEventListener() {
 
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -119,13 +120,30 @@ public class Inicio_Sesion extends Fragment {
                     String nombre = dataSnapshot.child("Nombre").getValue(String.class);
                     String correo = dataSnapshot.child("Correo").getValue(String.class);
                     String numero = dataSnapshot.child("Numero").getValue(String.class);
-                    preferences = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
-                    datos_Activity2 = preferences.edit();
-                    datos_Activity2.putString("Usuario", nombre);
-                    datos_Activity2.putString("Correo", correo);
-                    datos_Activity2.putString("Numero", numero);
-                    datos_Activity2.commit();
+                    String typeUser = dataSnapshot.child("typeUser").getValue(String.class);
 
+                        if(typeUser.equals("cliente")){
+
+                            Toast.makeText(getContext(), "Es cliente" , Toast.LENGTH_SHORT).show();
+                            preferences = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
+                            datos_Activity2 = preferences.edit();
+                            datos_Activity2.putString("Usuario", nombre);
+                            datos_Activity2.putString("Correo", correo);
+                            datos_Activity2.putString("Numero", numero);
+                            datos_Activity2.commit();
+                            progressDialog.cancel();
+                            getActivity().finish();
+                            startActivity(new Intent(getContext(), MainActivityMaps.class));
+
+                        }
+
+                }
+
+
+                else{
+
+                    Toast.makeText(getContext(), "Credenciales invalidas" , Toast.LENGTH_SHORT).show();
+                    progressDialog.cancel();
                 }
 
             }
@@ -147,15 +165,15 @@ public class Inicio_Sesion extends Fragment {
         @Override
 
         public void onComplete(@NonNull Task<AuthResult> task) {
+
             if(task.isSuccessful()) {
                 getUserInfo();
-
-                getActivity().finish();
-                startActivity(new Intent(getContext(), MainActivityMaps.class));
             }
                 else {
 
                 Toast.makeText(getContext(), "Credenciales invalidas" , Toast.LENGTH_SHORT).show();
+                progressDialog.cancel();
+
             }
 
         }

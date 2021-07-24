@@ -48,6 +48,7 @@ public class FragmentRegistro extends Fragment {
     String SNumero = "";
     String SCorreo = "";
     String SPass = "";
+    String typeUser="cliente";
 
     FirebaseAuth mAuth;
     FirebaseFirestore fStore;
@@ -132,8 +133,7 @@ public class FragmentRegistro extends Fragment {
                             map.put("Numero",SNumero);
                             map.put("Correo",SCorreo);
                             map.put("Password",SPass);
-
-
+                            map.put("typeUser", typeUser);
                         String id = mAuth.getCurrentUser().getUid();
                         mDatabase.child("Users").child(id).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override

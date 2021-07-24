@@ -10,7 +10,6 @@ import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
 
-
     private EditText editTextNombre;
     private EditText editTextNumero;
     private EditText editTextContrasena;
@@ -22,8 +21,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        editTextNombre = (EditText) findViewById(R.id.editTextNombre);
 
     }
 

@@ -9,9 +9,8 @@
     android:layout_height="match_parent"
     tools:context=".FragmentMap"
     android:fitsSystemWindows="true"
-
-    >
     tools:openDrawer="start"
+    >
 
 
     <com.google.android.material.navigation.NavigationView
@@ -258,7 +257,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/EnviarPeticion"
             android:layout_width="187dp"
             android:layout_height="44dp"
             android:layout_marginStart="160dp"

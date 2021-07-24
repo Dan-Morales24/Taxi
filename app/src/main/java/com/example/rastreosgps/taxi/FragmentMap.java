@@ -15,7 +15,6 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -30,17 +29,17 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
-import androidx.navigation.Navigation;
-
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -58,6 +57,9 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -71,7 +73,6 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
 
     private SharedPreferences preferences;
     private SharedPreferences.Editor datos_Activity2;
-    TextView nombreUsu, correo;
     TextView expand;
     DrawerLayout drawerLayout;
     Toolbar toolbar;
@@ -87,9 +88,12 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
     View vista, confirmar;
     TextView Destino;
     Button enviar;
+    Button Enviar_Peticion;
     private GoogleMap mGoogleMap;
     Double longitudOrigen, latitudOrigen;
     Boolean actualPosition = true;
+    Location mLastLocation;
+
 
 
     @Override
@@ -114,7 +118,6 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
         getChildFragmentManager().setFragmentResultListener("key", this, new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String key, @NonNull Bundle bundle) {
-
 
             }
         });
@@ -175,10 +178,12 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
             mMapView.getMapAsync(this);
         }
 
+        Enviar_Peticion =(Button)getView().findViewById(R.id.EnviarPeticion);
             enviar = (Button)getView().findViewById(R.id.enviar);
             confirmar = (ConstraintLayout)getView().findViewById(R.id.confirmar);
             mensaje2 = (TextView) getView().findViewById(R.id.destino);
             Destino = getView().findViewById(R.id.button_search);
+
             Destino.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -186,6 +191,20 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
                 startAutocompleteActivity();
                 }
            });
+
+
+            Enviar_Peticion.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("TravelRequest");
+                    GeoFire geoFire = new GeoFire(ref);
+                    geoFire.setLocation(UserId, new GeoLocation(mLastLocation.getLatitude(),mLastLocation.getLongitude()));
+
+                }
+            });
+
 
                     expand.setOnClickListener(new View.OnClickListener() {
                         @SuppressLint("WrongConstant")
@@ -206,6 +225,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
     }
 
     public void cerrarSesion() {
+        FirebaseAuth.getInstance().signOut();
         datos_Activity2.clear();
         datos_Activity2.commit();
         getActivity().finish();
@@ -263,6 +283,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
             @Override
             public void onMyLocationChange(Location location) {
                 if (actualPosition) {
+                    mLastLocation = location;
                     latitudOrigen = location.getLatitude();
                     longitudOrigen = location.getLongitude();
                     actualPosition = false;
