@@ -40,6 +40,8 @@ import android.widget.Toast;
 
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.GeoQuery;
+import com.firebase.geofire.GeoQueryEventListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -58,12 +60,16 @@ import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -93,7 +99,6 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
     Double longitudOrigen, latitudOrigen;
     Boolean actualPosition = true;
     Location mLastLocation;
-
 
 
     @Override
@@ -201,6 +206,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference("TravelRequest");
                     GeoFire geoFire = new GeoFire(ref);
                     geoFire.setLocation(UserId, new GeoLocation(mLastLocation.getLatitude(),mLastLocation.getLongitude()));
+                    getClosestDriver();
 
                 }
             });
@@ -223,6 +229,99 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
            }
        });
     }
+
+    private int radius = 1;
+    private boolean driverFound = false;
+    private String driverFoundID;
+
+
+    private void getClosestDriver() {
+        DatabaseReference driverLocation = FirebaseDatabase.getInstance().getReference().child("DriverOnline");
+        GeoFire geoFire = new GeoFire(driverLocation);
+        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(mLastLocation.getLatitude(),mLastLocation.getLongitude()),radius);
+        geoQuery.removeAllListeners();
+        geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
+            @Override
+            public void onKeyEntered(String key, GeoLocation location) {
+             if(!driverFound) {
+                 driverFound = true;
+                 driverFoundID=key;
+                 DatabaseReference driverRef = FirebaseDatabase.getInstance().getReference().child("Drivers").child(driverFoundID);
+                 String customerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                 HashMap map = new HashMap();
+                 map.put("CustomerRideId",customerId);
+                 driverRef.updateChildren(map);
+                 getDriverLocation();
+
+                 // Esperando confirmacion del conductor
+
+             }
+            }
+
+            @Override
+            public void onKeyExited(String key) {
+
+            }
+
+            @Override
+            public void onKeyMoved(String key, GeoLocation location) {
+
+            }
+
+            @Override
+            public void onGeoQueryReady() {
+                if(!driverFound)
+                {
+                    radius++;
+                    getClosestDriver();
+                }
+
+            }
+
+            @Override
+            public void onGeoQueryError(DatabaseError error) {
+
+            }
+        });
+
+    }
+
+    private Marker mDriveMarker;
+    private void getDriverLocation() {
+        DatabaseReference driverLocationRef = FirebaseDatabase.getInstance().getReference().child("driversWorking").child(driverFoundID).child("l");
+        driverLocationRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    List<Object> map = (List<Object>) snapshot.getValue();
+                    double locationLat = 0;
+                    double locationLong = 0;
+
+                    //El conductor acepto la solicitud
+                    if(map.get(0)!= null){
+                        locationLat = Double.parseDouble(map.get(0).toString());
+                    }
+                    if(map.get(1)!= null){
+
+                        locationLong = Double.parseDouble(map.get(1).toString());
+                    }
+
+                    LatLng driverLatLng = new LatLng(locationLat,locationLong);
+                    if (mDriveMarker != null){
+                        mDriveMarker.remove();
+                    }
+
+                    mDriveMarker = mGoogleMap.addMarker(new MarkerOptions().position(driverLatLng).title("Este es tu conductor"));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+
+            }
+        });
+    }
+
 
     public void cerrarSesion() {
         FirebaseAuth.getInstance().signOut();
