@@ -402,9 +402,10 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="057e0b" />
-                            <entry key="outputName" value="money" />
-                            <entry key="sourceFile" value="C:\Users\Rastreos GPS\AndroidStudioProjects\Taxi" />
+                            <entry key="outputName" value="ic_cupones" />
+                            <entry key="sourceFile" value="C:\Users\juand\Downloads\cupones.svg" />
                           </map>
                         </option>
                       </PersistentState>

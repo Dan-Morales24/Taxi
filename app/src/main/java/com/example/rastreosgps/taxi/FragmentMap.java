@@ -7,8 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Path;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -35,6 +38,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,10 +47,12 @@ import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
 import com.firebase.geofire.GeoQueryEventListener;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -77,6 +83,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
+import pl.droidsonroids.gif.GifImageView;
+
 
 public class FragmentMap extends Fragment implements OnMapReadyCallback, DirectionFinderListener, NavigationView.OnNavigationItemSelectedListener {
 
@@ -94,7 +102,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
     TextView mensaje2;
     MapView mMapView;
     View mView;
-    View vista, confirmar;
+    View vista, confirmar,pedirTaxi;
     TextView Destino,textdestinopreg,buscando;
     Button enviar;
     Button Enviar_Peticion;
@@ -103,6 +111,8 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
     Double longitudOrigen, latitudOrigen;
     Boolean actualPosition = true;
     Location mLastLocation;
+    GifImageView car;
+    ImageView correcto;
 
 
     @Override
@@ -162,6 +172,9 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
         buscando = getView().findViewById(R.id.Buscando);
         expand = getView().findViewById(R.id.expandir);
         progressBar = getView().findViewById(R.id.progressBar);
+        car = getView().findViewById(R.id.gifcar);
+        correcto = getView().findViewById(R.id.correctoimg);
+        pedirTaxi = getView().findViewById(R.id.PedirTaxi);
 
         drawerLayout = getView().findViewById(R.id.drawer_layout);
         navigationView = getView().findViewById(R.id.nav_view);
@@ -184,6 +197,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
         vista = getActivity().findViewById(R.id.solicitar);
         confirmar = getActivity().findViewById(R.id.confirmar);
         confirmar.setVisibility(View.GONE);
+        pedirTaxi.setVisibility(View.GONE);
         Places.initialize(getActivity().getApplicationContext(), "AIzaSyBp_PG1Db2LqFLDk5PSm1XO_fBtR-C3F3o");
         mMapView = (MapView) mView.findViewById(R.id.map_view);
         if (mMapView != null) {
@@ -216,14 +230,12 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
                     GeoFire geoFire = new GeoFire(ref);
                     geoFire.setLocation(UserId, new GeoLocation(mLastLocation.getLatitude(),mLastLocation.getLongitude()));
                     getClosestDriver();
-                    Enviar_Peticion.setVisibility(View.GONE);
-                    textdestinopreg.setVisibility(View.GONE);
-                    buscando.setVisibility(View.VISIBLE);
-                    progressBar.setVisibility(View.VISIBLE);
+
+                    confirmar.setVisibility(View.VISIBLE);
+                    pedirTaxi.setVisibility(View.VISIBLE);
+
                 }
             });
-
-
                     expand.setOnClickListener(new View.OnClickListener() {
                         @SuppressLint("WrongConstant")
                         @Override
@@ -237,16 +249,12 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
            public void onClick(View v) {
                vista.setVisibility(View.GONE);
                confirmar.setVisibility(View.VISIBLE);
-               expand.setVisibility(View.GONE);
-               buscando.setVisibility(View.GONE);
-               progressBar.setVisibility(View.GONE);
 
+               ////// imagen gif ocultar/////
 
-
-
-           }
-       });
-    }
+               }
+           });
+        }
 
     private int radius = 1;
     private boolean driverFound = false;
@@ -403,7 +411,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
             sendRequest(latitud,longitud);
             vista.setVisibility(View.VISIBLE);
             confirmar.setVisibility(View.GONE);
-
+            pedirTaxi.setVisibility(View.GONE);
         }
     }
 
@@ -518,7 +526,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
 
     @Override
     public void onDirectionFinderSuccess(List<Route> routes) {
-        double tarifaBase=30;
+        double tarifaBase = 30;
         double tiempoMin;
         double distanciaKil;
         double costoxKilometro;
@@ -531,7 +539,16 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
 
         for (Route route : routes) {
 
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom( route.endLocation,9));
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+             builder.include(route.startLocation);
+             builder.include(route.endLocation);
+             LatLngBounds bounds = builder.build();
+             int width = getResources().getDisplayMetrics().widthPixels;
+            int padding = (int) (width*0.2);
+
+             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds,padding);
+            mGoogleMap.animateCamera(cameraUpdate);
+             //mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom( route.endLocation,9));
            //  ((TextView) getView().findViewById(R.id.tiempo)).setText(route.duration.text);
            //  ((TextView) getView().findViewById(R.id.kilometros)).setText(route.distance.text);
                 double tiempo = route.duration.value;
@@ -555,11 +572,11 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
                    // Toast.makeText(getContext(), "tiempo : " +tiempo+ " Longitud: "+kilometros, Toast.LENGTH_SHORT).show();
 
 
-                      originMarkers.add(mGoogleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.primero))
+                      originMarkers.add(mGoogleMap.addMarker(new MarkerOptions().icon(bitmapDescriptorFromVector(getActivity(), R.drawable.ic_from))
                               .title(route.startAddress)
                               .position(route.startLocation)));
                     destinationMarkers.add(mGoogleMap.addMarker(new MarkerOptions()
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.segundo))
+                            .icon(bitmapDescriptorFromVector(getActivity(), R.drawable.ic_to))
                             .title(route.endAddress)
                             .position(route.endLocation)));
                     PolylineOptions polylineOptions = new PolylineOptions().
@@ -567,11 +584,15 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
                             color(Color.BLACK).
                             width(10);
 
+
                           for (int i = 0; i < route.points.size(); i++)
                               polylineOptions.add(route.points.get(i));
                               polylinePaths.add(mGoogleMap.addPolyline(polylineOptions));
                           }
-                        }
+
+
+
+    }
 
                         @Override
                         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -592,4 +613,16 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
                           }
                             return false;
                         }
+
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
+
+
                     }

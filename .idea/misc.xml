@@ -3,10 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/drawable/destino_select.xml" value="0.19583333333333333" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/drawable/ic_cupones.xml" value="0.19166666666666668" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/drawable/ic_from.xml" value="0.19583333333333333" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/drawable/ic_money.xml" value="0.19583333333333333" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/drawable/ic_to.xml" value="0.19583333333333333" />
         <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/drawable/mipbstyle.xml" value="0.16302083333333334" />
         <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/drawable/money.xml" value="0.1" />
         <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/drawable/rounded.xml" value="0.16302083333333334" />
-        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/layout/fragment_map.xml" value="0.32684283727399166" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/layout/fragment_map.xml" value="0.6666666666666666" />
       </map>
     </option>
   </component>
