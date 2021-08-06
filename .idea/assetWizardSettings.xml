@@ -392,7 +392,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material/icons/materialicons/account_circle/baseline_account_circle_24.xml" />
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material/icons/materialicons/money/baseline_money_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -402,8 +402,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_account" />
+                            <entry key="color" value="057e0b" />
+                            <entry key="outputName" value="money" />
                             <entry key="sourceFile" value="C:\Users\Rastreos GPS\AndroidStudioProjects\Taxi" />
                           </map>
                         </option>

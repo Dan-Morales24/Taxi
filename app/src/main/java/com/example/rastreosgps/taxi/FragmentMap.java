@@ -35,6 +35,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,11 +68,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.UnsupportedEncodingException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -92,9 +95,10 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
     MapView mMapView;
     View mView;
     View vista, confirmar;
-    TextView Destino;
+    TextView Destino,textdestinopreg,buscando;
     Button enviar;
     Button Enviar_Peticion;
+    ProgressBar progressBar;
     private GoogleMap mGoogleMap;
     Double longitudOrigen, latitudOrigen;
     Boolean actualPosition = true;
@@ -154,7 +158,11 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
        // nombreUsu = navHeader.findViewById(R.id.NombreUsuario);
        // nombreUsu.setText(nombre);
         //llamada al navigation view para mostrarlo
+        textdestinopreg = getView().findViewById(R.id.destinoPreg);
+        buscando = getView().findViewById(R.id.Buscando);
         expand = getView().findViewById(R.id.expandir);
+        progressBar = getView().findViewById(R.id.progressBar);
+
         drawerLayout = getView().findViewById(R.id.drawer_layout);
         navigationView = getView().findViewById(R.id.nav_view);
 
@@ -163,6 +171,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
         ((TextView) Cliente.findViewById(R.id.NombreUsuario)).setText(nombre);
         ((TextView) Cliente.findViewById(R.id.NombreCorreo)).setText(correo);
         //////////////////////////////////////////////////////////
+
 
         //colocar enfrente del fragmento el navigation view para poder controlarlo
         navigationView.bringToFront();
@@ -203,11 +212,14 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
                 public void onClick(View view) {
 
                     String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("TravelRequest");
+                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("customerRequest");
                     GeoFire geoFire = new GeoFire(ref);
                     geoFire.setLocation(UserId, new GeoLocation(mLastLocation.getLatitude(),mLastLocation.getLongitude()));
                     getClosestDriver();
-
+                    Enviar_Peticion.setVisibility(View.GONE);
+                    textdestinopreg.setVisibility(View.GONE);
+                    buscando.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.VISIBLE);
                 }
             });
 
@@ -226,6 +238,12 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
                vista.setVisibility(View.GONE);
                confirmar.setVisibility(View.VISIBLE);
                expand.setVisibility(View.GONE);
+               buscando.setVisibility(View.GONE);
+               progressBar.setVisibility(View.GONE);
+
+
+
+
            }
        });
     }
@@ -234,29 +252,48 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
     private boolean driverFound = false;
     private String driverFoundID;
 
-
     private void getClosestDriver() {
-        DatabaseReference driverLocation = FirebaseDatabase.getInstance().getReference().child("DriverOnline");
+        DatabaseReference driverLocation = FirebaseDatabase.getInstance().getReference().child("driverOnline");
         GeoFire geoFire = new GeoFire(driverLocation);
         GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(mLastLocation.getLatitude(),mLastLocation.getLongitude()),radius);
         geoQuery.removeAllListeners();
         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
             @Override
             public void onKeyEntered(String key, GeoLocation location) {
-             if(!driverFound) {
-                 driverFound = true;
-                 driverFoundID=key;
-                 DatabaseReference driverRef = FirebaseDatabase.getInstance().getReference().child("Drivers").child(driverFoundID);
-                 String customerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                 HashMap map = new HashMap();
-                 map.put("CustomerRideId",customerId);
-                 driverRef.updateChildren(map);
-                 getDriverLocation();
+                if (!driverFound){
+                    DatabaseReference mCustomerDatabase = FirebaseDatabase.getInstance().getReference().child("Drivers").child(key);
+                    mCustomerDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists() && dataSnapshot.getChildrenCount()>0){
+                                Map<String, Object> driverMap = (Map<String, Object>) dataSnapshot.getValue();
+                                if (driverFound){
+                                    return;
+                                }
 
-                 // Esperando confirmacion del conductor
+                                    driverFound = true;
+                                    driverFoundID = dataSnapshot.getKey();
 
-             }
+                                    DatabaseReference driverRef = FirebaseDatabase.getInstance().getReference().child("Drivers").child(driverFoundID).child("customerRequestDrive");
+                                    String customerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                    HashMap map = new HashMap();
+                                    map.put("customerRideId", customerId);
+
+                                    driverRef.updateChildren(map);
+
+                                Toast.makeText(getContext(), "encontro conductor conectado", Toast.LENGTH_SHORT).show();
+
+                                getDriverLocation();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
+                }
             }
+
 
             @Override
             public void onKeyExited(String key) {
@@ -298,11 +335,12 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
                     double locationLong = 0;
 
                     //El conductor acepto la solicitud
+                    //Toast.makeText(getContext(), "Cliente encontrado", Toast.LENGTH_SHORT).show();
+
                     if(map.get(0)!= null){
                         locationLat = Double.parseDouble(map.get(0).toString());
                     }
                     if(map.get(1)!= null){
-
                         locationLong = Double.parseDouble(map.get(1).toString());
                     }
 
@@ -310,7 +348,18 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
                     if (mDriveMarker != null){
                         mDriveMarker.remove();
                     }
+                    Location loc1 = new Location("");
+                    loc1.setLatitude(mLastLocation.getLatitude());
+                    loc1.setLongitude(mLastLocation.getLongitude());
 
+                    Location loc2 = new Location("");
+                    loc2.setLongitude(driverLatLng.longitude);
+                    loc2.setLatitude(driverLatLng.latitude);
+
+                    float distance  = loc1.distanceTo(loc2);
+                    Toast.makeText(getContext(), "Distancia del conductor hasta tu punto: " +String.valueOf(distance), Toast.LENGTH_SHORT).show();
+
+                    //en el float se almacena a que distancia se encuentra el conductor
                     mDriveMarker = mGoogleMap.addMarker(new MarkerOptions().position(driverLatLng).title("Este es tu conductor"));
                 }
             }
@@ -483,8 +532,8 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
         for (Route route : routes) {
 
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom( route.endLocation,9));
-             ((TextView) getView().findViewById(R.id.tiempo)).setText(route.duration.text);
-             ((TextView) getView().findViewById(R.id.kilometros)).setText(route.distance.text);
+           //  ((TextView) getView().findViewById(R.id.tiempo)).setText(route.duration.text);
+           //  ((TextView) getView().findViewById(R.id.kilometros)).setText(route.distance.text);
                 double tiempo = route.duration.value;
                 double kilometros = route.distance.value;
 
@@ -493,11 +542,14 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
                     costoxKilometro = distanciaKil * 4.8;
                     costoxMinuto = tiempoMin * 1.8;
                     CostoTotal = costoxKilometro + costoxMinuto;
+
+                    DecimalFormat format = new DecimalFormat();
+                    format.setMaximumFractionDigits(2);
                     if(CostoTotal >30){
-                        ((TextView) getView().findViewById(R.id.costo)).setText(""+CostoTotal+" Pesos");
+                        ((TextView) getView().findViewById(R.id.costo)).setText("$"+format.format(CostoTotal));
                     }
                     else{
-                        ((TextView) getView().findViewById(R.id.costo)).setText(""+tarifaBase+" Pesos");
+                        ((TextView) getView().findViewById(R.id.costo)).setText("$"+tarifaBase);
                      }
 
                    // Toast.makeText(getContext(), "tiempo : " +tiempo+ " Longitud: "+kilometros, Toast.LENGTH_SHORT).show();

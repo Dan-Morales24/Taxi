@@ -9,9 +9,10 @@
     android:layout_height="match_parent"
     tools:context=".FragmentMap"
     android:fitsSystemWindows="true"
-    tools:openDrawer="start"
+
     >
 
+    tools:openDrawer="start"
 
     <com.google.android.material.navigation.NavigationView
         android:layout_height="match_parent"
@@ -31,251 +32,309 @@
     >
 
 
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <com.google.android.gms.maps.MapView
-            android:id="@+id/map_view"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            android:layout_height="match_parent">
 
 
-        <TextView
-            android:id="@+id/destino"
-            android:layout_width="347dp"
-            android:layout_height="43dp"
-            android:layout_marginTop="65dp"
-            android:background="@drawable/destino_select"
-            android:drawableStart="@drawable/primero"
-            android:paddingStart="12dp"
-            android:text="Elegir ubicacion"
-            android:paddingEnd="35dp"
-            android:clickable="true"
-            android:gravity="center"
-            android:textColor="#000000"
-            android:textSize="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/map_view" />
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/map_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0"
+                tools:ignore="SpeakableTextPresentCheck" />
+
+            <TextView
+                android:id="@+id/destino"
+                android:layout_width="347dp"
+                android:layout_height="43dp"
+                android:layout_marginTop="65dp"
+                android:background="@drawable/destino_select"
+                android:clickable="true"
+                android:drawableStart="@drawable/primero"
+                android:gravity="center"
+                android:paddingStart="12dp"
+                android:paddingEnd="35dp"
+                android:text="Elegir ubicacion"
+                android:textColor="#000000"
+                android:textSize="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/map_view"
+                tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck" />
 
 
-        <TextView
-            android:id="@+id/button_search"
-            android:layout_width="347dp"
-            android:layout_height="43dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/destino_select"
-            android:drawableStart="@drawable/segundo"
-            android:gravity="center"
-            android:paddingStart="12dp"
-            android:paddingEnd="35dp"
-            android:textColor="#000000"
-            android:text="Elegir destino"
+            <TextView
+                android:id="@+id/button_search"
+                android:layout_width="347dp"
+                android:layout_height="43dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/destino_select"
+                android:drawableStart="@drawable/segundo"
+                android:gravity="center"
+                android:paddingStart="12dp"
+                android:paddingEnd="35dp"
+                android:text="Elegir destino"
+                android:textColor="#000000"
 
-            android:textSize="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.489"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/destino" />
+                android:textSize="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.489"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/destino" />
 
-        <TextView
-            android:id="@+id/expandir"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:clickable="true"
-            android:drawableLeft="@mipmap/menu"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/map_view" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/expandir"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:clickable="true"
+                android:drawableLeft="@mipmap/menu"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/map_view"
+                tools:ignore="SpeakableTextPresentCheck" />
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        android:id="@+id/solicitar"
-        android:layout_width="match_parent"
-        android:layout_height="210dp"
-        android:background="@drawable/rounded"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+        <androidx.constraintlayout.widget.ConstraintLayout
 
 
-        <TextView
-            android:id="@+id/textView9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="201dp"
-            android:textStyle="bold"
-            android:textSize="16dp"
-            android:textColor="#ffffff"
-            android:drawableStart="@drawable/tiempo"
-            android:drawablePadding="7dp"
-            android:paddingStart="56dp"
-            android:paddingEnd="5dp"
-            android:text="Tiempo al Lugar de destino:"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:id="@+id/solicitar"
+            android:layout_width="match_parent"
+            android:layout_height="210dp"
+            android:background="@drawable/rounded"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-        <TextView
-            android:id="@+id/textView10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="37dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="191dp"
-            android:textStyle="bold"
-            android:textColor="#ffffff"
-            android:textSize="16dp"
-            android:drawableStart="@drawable/ruta"
-            android:drawablePadding="7dp"
-            android:paddingStart="56dp"
-            android:paddingEnd="5dp"
-            android:text="Distancia al lugar de destino: "
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="248dp"
-            android:textStyle="bold"
-            android:textColor="#ffffff"
-            android:textSize="16dp"
-            android:drawableStart="@drawable/costo"
-            android:drawablePadding="7dp"
-            android:paddingStart="44dp"
-            android:paddingEnd="5dp"
-            android:text="Costo total del viaje:"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView10" />
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="73dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="10dp"
+                android:drawableRight="@drawable/money"
+                android:text="Efectivo"
+                android:textColor="#000000"
+                android:textSize="11dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
-        <TextView
-            android:id="@+id/tiempo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="65dp"
-            android:layout_marginTop="34dp"
-            android:layout_marginEnd="61dp"
-            android:text="0 mins"
-            android:textColor="#ffffff"
-            android:textSize="14dp"
-            app:layout_constraintBottom_toTopOf="@+id/kilometros"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView9"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:layout_marginEnd="10dp"
+                android:text="Metodo de pago"
+                android:textColor="#000000"
+                android:textSize="10dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
-        <TextView
-            android:id="@+id/kilometros"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="67dp"
-            android:layout_marginTop="26dp"
-            android:layout_marginEnd="59dp"
-            android:text="0 km"
-            android:textColor="#ffffff"
-            android:textSize="14dp"
-            app:layout_constraintBottom_toTopOf="@+id/costo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView10"
-            app:layout_constraintTop_toBottomOf="@+id/tiempo" />
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="108dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginEnd="107dp"
+                android:src="@drawable/estandard"
+                app:layout_constraintEnd_toStartOf="@+id/imageView5"
+                app:layout_constraintStart_toEndOf="@+id/imageView4"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints" />
 
-        <TextView
-            android:id="@+id/costo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="107dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="59dp"
-            android:layout_marginBottom="34dp"
-            android:text="0 Pesos"
-            android:textColor="#ffffff"
-            android:textSize="14dp"
-            app:layout_constraintBottom_toTopOf="@+id/button3"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView11"
-            app:layout_constraintTop_toBottomOf="@+id/kilometros"
-            tools:ignore="UnknownId" />
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="38dp"
+                android:layout_marginTop="7dp"
+                android:src="@drawable/basico"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/enviar"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|top"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/boton_redondo"
-            android:scaleType="centerCrop"
-            android:text="Pedir taxi"
-            android:textColor="#ffffff"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView11"
-            tools:ignore="MissingConstraints" />
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="53dp"
+                android:layout_height="14dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="32dp"
+                android:text="Plan Basico"
+                android:textColor="#000000"
+                android:textSize="10dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginEnd="38dp"
+                android:src="@drawable/coche"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/confirmar"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:background="@drawable/confirm"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="68dp"
+                android:layout_height="16dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="88dp"
+                android:layout_marginEnd="90dp"
+                android:text="Plan Standard"
+                android:textColor="#1132DD"
+                android:textSize="10dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/textView9"
+                app:layout_constraintStart_toEndOf="@+id/textView10"
+                app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="174dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="179dp"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            android:textColor="#ffffff"
-            android:text="¿Su destino es correcto?"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="44dp"
+                android:layout_height="16dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginEnd="36dp"
+                android:text="Plan Plus"
+                android:textColor="#000000"
+                android:textSize="10dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView5" />
 
-        <Button
-            android:id="@+id/EnviarPeticion"
-            android:layout_width="187dp"
-            android:layout_height="44dp"
-            android:layout_marginStart="160dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginEnd="163dp"
-            android:background="@drawable/boton_redondo"
+            <TextView
+                android:id="@+id/costo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="181dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="181dp"
+                android:text="$0"
+                android:textColor="#000000"
+                android:textSize="44dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView7"
+                tools:ignore="UnknownId" />
 
-            android:text="Confirmar"
-            android:textColor="#ffffff"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView7" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <Button
+                android:id="@+id/enviar"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|top"
+                android:layout_marginStart="80dp"
+                android:layout_marginTop="9dp"
+                android:layout_marginEnd="80dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/boton_redondo"
+                android:scaleType="centerCrop"
+                android:text="Pedir taxi"
+                android:textColor="#ffffff"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/costo"
+                tools:ignore="MissingConstraints" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/confirmar"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="@drawable/confirm"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
 
 
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+            <TextView
+                android:id="@+id/destinoPreg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="174dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="179dp"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:textColor="#ffffff"
+                android:text="¿Su destino es correcto?"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="323dp"
+                android:layout_height="11dp"
+                android:layout_marginStart="174dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="179dp"
+                app:layout_anchorGravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:indeterminate="true"
+                android:indeterminateTint="#ffff"
+                android:scaleY="2"
+
+                />
+
+            <Button
+                android:id="@+id/EnviarPeticion"
+                android:layout_width="187dp"
+                android:layout_height="44dp"
+                android:layout_marginStart="160dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="163dp"
+                android:background="@drawable/boton_redondo"
+                android:text="Confirmar"
+                android:textColor="#ffffff"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/destinoPreg"
+                tools:ignore="TouchTargetSizeCheck" />
+
+
+            <TextView
+                android:id="@+id/Buscando"
+                android:layout_width="323dp"
+                android:layout_height="49dp"
+                android:layout_marginStart="160dp"
+                android:layout_marginTop="42dp"
+                android:layout_marginEnd="163dp"
+                android:text="Estamos buscando un conductor espera un momento ..."
+                android:textColor="#ffffff"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/destinoPreg" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>
 
