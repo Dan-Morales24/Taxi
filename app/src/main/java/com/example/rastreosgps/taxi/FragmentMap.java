@@ -112,7 +112,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
     Boolean actualPosition = true;
     Location mLastLocation;
     GifImageView car;
-    ImageView correcto;
+    ImageView correcto,planplus,planbasico;
 
 
     @Override
@@ -168,6 +168,8 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
        // nombreUsu = navHeader.findViewById(R.id.NombreUsuario);
        // nombreUsu.setText(nombre);
         //llamada al navigation view para mostrarlo
+        planbasico = getView().findViewById(R.id.planBasico);
+        planplus = getView().findViewById(R.id.planPlus);
         textdestinopreg = getView().findViewById(R.id.destinoPreg);
         buscando = getView().findViewById(R.id.Buscando);
         expand = getView().findViewById(R.id.expandir);
@@ -198,6 +200,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
         confirmar = getActivity().findViewById(R.id.confirmar);
         confirmar.setVisibility(View.GONE);
         pedirTaxi.setVisibility(View.GONE);
+        expand.setVisibility(View.VISIBLE);
         Places.initialize(getActivity().getApplicationContext(), "AIzaSyBp_PG1Db2LqFLDk5PSm1XO_fBtR-C3F3o");
         mMapView = (MapView) mView.findViewById(R.id.map_view);
         if (mMapView != null) {
@@ -220,6 +223,28 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
                 }
            });
 
+            planbasico.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Toast.makeText(getContext(), "Proximamente tipos de planes", Toast.LENGTH_SHORT).show();
+
+
+                }
+            });
+
+            planplus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Toast.makeText(getContext(), "Proximamente tipos de planes", Toast.LENGTH_SHORT).show();
+
+                }
+            });
+
+
+
+
 
             Enviar_Peticion.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -234,6 +259,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
                     confirmar.setVisibility(View.VISIBLE);
                     pedirTaxi.setVisibility(View.VISIBLE);
 
+
                 }
             });
                     expand.setOnClickListener(new View.OnClickListener() {
@@ -247,6 +273,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
        enviar.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
+               expand.setVisibility(View.GONE);
                vista.setVisibility(View.GONE);
                confirmar.setVisibility(View.VISIBLE);
 
@@ -447,7 +474,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
                 //    mGoogleMap.addMarker(new MarkerOptions().position(miPosition).title("Yo estoy aqui"));
                     CameraPosition cameraPosition = new CameraPosition.Builder()
                             .target(new LatLng(latitudOrigen, longitudOrigen))
-                            .zoom(20)
+                            .zoom(16)
                             .build();
                     mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                     setLocation(location);
@@ -559,7 +586,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
                     costoxKilometro = distanciaKil * 4.8;
                     costoxMinuto = tiempoMin * 1.8;
                     CostoTotal = costoxKilometro + costoxMinuto;
-
+            expand.setVisibility(View.VISIBLE);
                     DecimalFormat format = new DecimalFormat();
                     format.setMaximumFractionDigits(2);
                     if(CostoTotal >30){
