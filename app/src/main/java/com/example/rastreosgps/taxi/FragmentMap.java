@@ -113,6 +113,8 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
     Location mLastLocation;
     GifImageView car;
     ImageView correcto,planplus,planbasico;
+    private Boolean requestbol = false;
+    private Marker pickupMarker;
 
 
     @Override
@@ -214,7 +216,6 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
             confirmar = (ConstraintLayout)getView().findViewById(R.id.confirmar);
             mensaje2 = (TextView) getView().findViewById(R.id.destino);
             Destino = getView().findViewById(R.id.button_search);
-
             Destino.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -250,14 +251,48 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
                 @Override
                 public void onClick(View view) {
 
-                    String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("customerRequest");
-                    GeoFire geoFire = new GeoFire(ref);
-                    geoFire.setLocation(UserId, new GeoLocation(mLastLocation.getLatitude(),mLastLocation.getLongitude()));
-                    getClosestDriver();
+                    if(requestbol){
 
-                    confirmar.setVisibility(View.VISIBLE);
-                    pedirTaxi.setVisibility(View.VISIBLE);
+                        geoQuery.removeAllListeners();
+                        requestbol = false;
+                        driverLocationRef.removeEventListener(driverLocationRefListener);
+
+                        if(driverFoundID!=null){
+                            DatabaseReference driverRef = FirebaseDatabase.getInstance().getReference().child("Drivers").child("customerRequestDrive").child(driverFoundID);
+                            driverRef.setValue(true);
+                            driverFoundID = null;
+                        }
+
+                        driverFound = false;
+                        radius =1;
+                        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("customerRequest");
+                        GeoFire geoFire = new GeoFire(ref);
+                        geoFire.removeLocation(userId);
+
+                            if (pickupMarker!= null){
+
+                            pickupMarker.remove();
+
+                            }
+
+                    }
+
+                        else {
+
+                        String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("customerRequest");
+                        GeoFire geoFire = new GeoFire(ref);
+                        geoFire.setLocation(UserId, new GeoLocation(mLastLocation.getLatitude(),mLastLocation.getLongitude()));
+                        getClosestDriver();
+
+                        confirmar.setVisibility(View.VISIBLE);
+                        pedirTaxi.setVisibility(View.VISIBLE);
+                    }
+
+
+
+
 
 
                 }
@@ -276,9 +311,6 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
                expand.setVisibility(View.GONE);
                vista.setVisibility(View.GONE);
                confirmar.setVisibility(View.VISIBLE);
-
-               ////// imagen gif ocultar/////
-
                }
            });
         }
@@ -286,25 +318,24 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
     private int radius = 1;
     private boolean driverFound = false;
     private String driverFoundID;
+    GeoQuery geoQuery;
 
     private void getClosestDriver() {
         DatabaseReference driverLocation = FirebaseDatabase.getInstance().getReference().child("driverOnline");
         GeoFire geoFire = new GeoFire(driverLocation);
-        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(mLastLocation.getLatitude(),mLastLocation.getLongitude()),radius);
+         geoQuery = geoFire.queryAtLocation(new GeoLocation(mLastLocation.getLatitude(),mLastLocation.getLongitude()),radius);
         geoQuery.removeAllListeners();
+
         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
             @Override
             public void onKeyEntered(String key, GeoLocation location) {
-                if (!driverFound){
+                if (!driverFound && requestbol ){
                     DatabaseReference mCustomerDatabase = FirebaseDatabase.getInstance().getReference().child("Drivers").child(key);
                     mCustomerDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists() && dataSnapshot.getChildrenCount()>0){
                                 Map<String, Object> driverMap = (Map<String, Object>) dataSnapshot.getValue();
-                                if (driverFound){
-                                    return;
-                                }
 
                                     driverFound = true;
                                     driverFoundID = dataSnapshot.getKey();
@@ -359,12 +390,14 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
     }
 
     private Marker mDriveMarker;
+    private DatabaseReference driverLocationRef;
+    private ValueEventListener driverLocationRefListener;
     private void getDriverLocation() {
-        DatabaseReference driverLocationRef = FirebaseDatabase.getInstance().getReference().child("driversWorking").child(driverFoundID).child("l");
-        driverLocationRef.addValueEventListener(new ValueEventListener() {
+         driverLocationRef = FirebaseDatabase.getInstance().getReference().child("driversWorking").child(driverFoundID).child("l");
+        driverLocationRefListener = driverLocationRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                if(snapshot.exists()){
+                if(snapshot.exists() && requestbol ){
                     List<Object> map = (List<Object>) snapshot.getValue();
                     double locationLat = 0;
                     double locationLong = 0;
@@ -383,6 +416,9 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
                     if (mDriveMarker != null){
                         mDriveMarker.remove();
                     }
+
+               pickupMarker =  mDriveMarker = mGoogleMap.addMarker(new MarkerOptions().icon(bitmapDescriptorFromVector(getActivity(), R.drawable.ic_car)).position(driverLatLng).title("Tu conductor"));
+
                     Location loc1 = new Location("");
                     loc1.setLatitude(mLastLocation.getLatitude());
                     loc1.setLongitude(mLastLocation.getLongitude());
@@ -395,7 +431,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
                     Toast.makeText(getContext(), "Distancia del conductor hasta tu punto: " +String.valueOf(distance), Toast.LENGTH_SHORT).show();
 
                     //en el float se almacena a que distancia se encuentra el conductor
-                    mDriveMarker = mGoogleMap.addMarker(new MarkerOptions().position(driverLatLng).title("Este es tu conductor"));
+
                 }
             }
 
@@ -492,7 +528,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
                 List<Address> list  = geocoder.getFromLocation( loc.getLatitude(),loc.getLongitude(), 1);
                 if (!list.isEmpty()){
                     Address dirCalle = list.get(0);
-                    Toast.makeText(getContext(), "Estoy en este lugar : " +dirCalle.getAddressLine(0), Toast.LENGTH_SHORT).show();
+                  //  Toast.makeText(getContext(), "Estoy en este lugar : " +dirCalle.getAddressLine(0), Toast.LENGTH_SHORT).show();
                     mensaje2.setText(dirCalle.getAddressLine(0));
                 }
             } catch (Exception e) {
@@ -640,6 +676,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
                           }
                             return false;
                         }
+
 
     private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
         Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);

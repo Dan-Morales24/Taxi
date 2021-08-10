@@ -45,6 +45,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     implementation 'com.google.firebase:firebase-firestore:23.0.1'
+    implementation 'org.jetbrains:annotations:15.0'
     def nav_version = "2.3.5"
 
 
