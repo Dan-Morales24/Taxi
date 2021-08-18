@@ -86,7 +86,7 @@ import java.util.Optional;
 import pl.droidsonroids.gif.GifImageView;
 
 
-public class FragmentMap extends Fragment implements OnMapReadyCallback, DirectionFinderListener, NavigationView.OnNavigationItemSelectedListener {
+public class FragmentMap extends Fragment implements OnMapReadyCallback, DirectionFinderListener, NavigationView.OnNavigationItemSelectedListener,com.google.android.gms.location.LocationListener {
 
     private SharedPreferences preferences;
     private SharedPreferences.Editor datos_Activity2;
@@ -114,7 +114,17 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
     GifImageView car;
     ImageView correcto,planplus,planbasico;
     private Boolean requestbol = false;
-    private Marker pickupMarker;
+    private Marker mDriveMarker;
+
+
+    private Context mContext;
+
+    // Initialise it from onAttach()
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
 
 
     @Override
@@ -229,8 +239,6 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
                 public void onClick(View view) {
 
                     Toast.makeText(getContext(), "Proximamente tipos de planes", Toast.LENGTH_SHORT).show();
-
-
                 }
             });
 
@@ -270,16 +278,13 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
                         GeoFire geoFire = new GeoFire(ref);
                         geoFire.removeLocation(userId);
 
-                            if (pickupMarker!= null){
-
-                            pickupMarker.remove();
-
-                            }
 
                     }
 
                         else {
 
+
+                        requestbol = true;
                         String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("customerRequest");
                         GeoFire geoFire = new GeoFire(ref);
@@ -315,10 +320,13 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
            });
         }
 
-    private int radius = 1;
+    private double radius = 1;
     private boolean driverFound = false;
     private String driverFoundID;
     GeoQuery geoQuery;
+
+
+    /**
 
     private void getClosestDriver() {
         DatabaseReference driverLocation = FirebaseDatabase.getInstance().getReference().child("driverOnline");
@@ -329,9 +337,10 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
             @Override
             public void onKeyEntered(String key, GeoLocation location) {
-                if (!driverFound && requestbol ){
+                if (!driverFound && requestbol){
                     DatabaseReference mCustomerDatabase = FirebaseDatabase.getInstance().getReference().child("Drivers").child(key);
                     mCustomerDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists() && dataSnapshot.getChildrenCount()>0){
@@ -351,7 +360,11 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
 
                                 getDriverLocation();
                             }
+
+
                         }
+
+
 
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
@@ -389,58 +402,169 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
 
     }
 
-    private Marker mDriveMarker;
+
+     */
+/////
+
+    private void getClosestDriver(){
+        DatabaseReference driverLocation = FirebaseDatabase.getInstance().getReference().child("driverOnline");
+
+        GeoFire geoFire = new GeoFire(driverLocation);
+        geoQuery = geoFire.queryAtLocation(new GeoLocation(mLastLocation.getLatitude(),mLastLocation.getLongitude()),radius);
+        geoQuery.removeAllListeners();
+
+        geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
+            @Override
+            public void onKeyEntered(String key, GeoLocation location) {
+                if (!driverFound && requestbol){
+                    DatabaseReference mCustomerDatabase = FirebaseDatabase.getInstance().getReference().child("Drivers").child(key);
+                    mCustomerDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists() && dataSnapshot.getChildrenCount()>0){
+                                Map<String, Object> driverMap = (Map<String, Object>) dataSnapshot.getValue();
+                                if (driverFound){
+                                    return;
+                                }
+                                    driverFound = true;
+                                    driverFoundID = dataSnapshot.getKey();
+                                   String customerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                DatabaseReference driverRef = FirebaseDatabase.getInstance().getReference().child("Drivers").child(driverFoundID).child("customerRequestDrive");
+                                HashMap map = new HashMap();
+                                    map.put("customerRideId", customerId);
+                                  //  map.put("destination", destination);
+                                  //  map.put("destinationLat", destinationLatLng.latitude);
+                                  //  map.put("destinationLng", destinationLatLng.longitude);
+                                   driverRef.updateChildren(map);
+                                    getDriverLocation();
+                                   // getDriverInfo();
+                                   // getHasRideEnded();
+                                   // mRequest.setText("Looking for Driver Location....");
+
+                            }
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onKeyExited(String key) {
+
+            }
+
+            @Override
+            public void onKeyMoved(String key, GeoLocation location) {
+
+            }
+
+            @Override
+            public void onGeoQueryReady() {
+                if (!driverFound)
+                {
+                    radius++;
+                    getClosestDriver();
+                }
+            }
+
+            @Override
+            public void onGeoQueryError(DatabaseError error) {
+
+            }
+        });
+    }
+
+
+////
+
+
+    @Override
+    public void onCreateViewHolder(){
+
+
+    }
+
+    // nuevo
+
+
     private DatabaseReference driverLocationRef;
     private ValueEventListener driverLocationRefListener;
-    private void getDriverLocation() {
-         driverLocationRef = FirebaseDatabase.getInstance().getReference().child("driversWorking").child(driverFoundID).child("l");
+    private Marker mDriverMarker;
+    private void getDriverLocation(){
+        driverLocationRef = FirebaseDatabase.getInstance().getReference().child("driversWorking").child(driverFoundID).child("l");
         driverLocationRefListener = driverLocationRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                if(snapshot.exists() && requestbol ){
-                    List<Object> map = (List<Object>) snapshot.getValue();
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists() && requestbol){
+                    List<Object> map = (List<Object>) dataSnapshot.getValue();
                     double locationLat = 0;
-                    double locationLong = 0;
-
-                    //El conductor acepto la solicitud
-                    //Toast.makeText(getContext(), "Cliente encontrado", Toast.LENGTH_SHORT).show();
-
-                    if(map.get(0)!= null){
+                    double locationLng = 0;
+                    if(map.get(0) != null){
                         locationLat = Double.parseDouble(map.get(0).toString());
                     }
-                    if(map.get(1)!= null){
-                        locationLong = Double.parseDouble(map.get(1).toString());
+                    if(map.get(1) != null){
+                        locationLng = Double.parseDouble(map.get(1).toString());
                     }
-
-                    LatLng driverLatLng = new LatLng(locationLat,locationLong);
-                    if (mDriveMarker != null){
-                        mDriveMarker.remove();
+                    LatLng driverLatLng = new LatLng(locationLat,locationLng);
+                    if(mDriverMarker != null){
+                        mDriverMarker.remove();
                     }
-
-               pickupMarker =  mDriveMarker = mGoogleMap.addMarker(new MarkerOptions().icon(bitmapDescriptorFromVector(getActivity(), R.drawable.ic_car)).position(driverLatLng).title("Tu conductor"));
-
                     Location loc1 = new Location("");
                     loc1.setLatitude(mLastLocation.getLatitude());
                     loc1.setLongitude(mLastLocation.getLongitude());
 
                     Location loc2 = new Location("");
-                    loc2.setLongitude(driverLatLng.longitude);
                     loc2.setLatitude(driverLatLng.latitude);
+                    loc2.setLongitude(driverLatLng.longitude);
 
-                    float distance  = loc1.distanceTo(loc2);
-                    Toast.makeText(getContext(), "Distancia del conductor hasta tu punto: " +String.valueOf(distance), Toast.LENGTH_SHORT).show();
+                    float distance = loc1.distanceTo(loc2);
 
-                    //en el float se almacena a que distancia se encuentra el conductor
+                    if (distance<100){
+
+                            Toast.makeText(mContext, "El conductor llego", Toast.LENGTH_SHORT).show();
+
+
+                    }else{
+
+
+                            Toast.makeText(mContext, "Encontramos al conductor", Toast.LENGTH_SHORT).show();
+
+                    }
+
+
+
+                    mDriverMarker = mGoogleMap.addMarker(new MarkerOptions().position(driverLatLng).title("your driver").icon(bitmapDescriptorFromVector(mContext, R.drawable.ic_car)));
+                }
+
+                else{
+
+                    if(mDriverMarker!= null) {
+                        mDriverMarker.remove();
+
+                      
+                            Toast.makeText(mContext, "se elimina el marker de conductor", Toast.LENGTH_SHORT).show();
+
+                        }
 
                 }
+
             }
+
+
 
             @Override
-            public void onCancelled(DatabaseError error) {
-
+            public void onCancelled(DatabaseError databaseError) {
             }
         });
+
     }
+
+
+
+
+
 
 
     public void cerrarSesion() {
@@ -477,7 +601,6 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
             pedirTaxi.setVisibility(View.GONE);
         }
     }
-
     private void getLocalization() {
             int permiso = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION);
             if (permiso == PackageManager.PERMISSION_DENIED) {
@@ -622,7 +745,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
                     costoxKilometro = distanciaKil * 4.8;
                     costoxMinuto = tiempoMin * 1.8;
                     CostoTotal = costoxKilometro + costoxMinuto;
-            expand.setVisibility(View.VISIBLE);
+                    expand.setVisibility(View.VISIBLE);
                     DecimalFormat format = new DecimalFormat();
                     format.setMaximumFractionDigits(2);
                     if(CostoTotal >30){
@@ -632,8 +755,8 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
                         ((TextView) getView().findViewById(R.id.costo)).setText("$"+tarifaBase);
                      }
 
-                   // Toast.makeText(getContext(), "tiempo : " +tiempo+ " Longitud: "+kilometros, Toast.LENGTH_SHORT).show();
 
+                   // Toast.makeText(getContext(), "tiempo : " +tiempo+ " Longitud: "+kilometros, Toast.LENGTH_SHORT).show();
 
                       originMarkers.add(mGoogleMap.addMarker(new MarkerOptions().icon(bitmapDescriptorFromVector(getActivity(), R.drawable.ic_from))
                               .title(route.startAddress)
@@ -646,16 +769,11 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
                             geodesic(true).
                             color(Color.BLACK).
                             width(10);
-
-
                           for (int i = 0; i < route.points.size(); i++)
                               polylineOptions.add(route.points.get(i));
                               polylinePaths.add(mGoogleMap.addPolyline(polylineOptions));
                           }
-
-
-
-    }
+                        }
 
                         @Override
                         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -678,15 +796,17 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
                         }
 
 
-    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
-        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
-        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
-        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        vectorDrawable.draw(canvas);
-        return BitmapDescriptorFactory.fromBitmap(bitmap);
+                public BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
+                    Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+                    vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+                    Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+                    Canvas canvas = new Canvas(bitmap);
+                    vectorDrawable.draw(canvas);
+                    return BitmapDescriptorFactory.fromBitmap(bitmap);
+                }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
     }
-
-
-
-                    }
+}
