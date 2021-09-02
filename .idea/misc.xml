@@ -4,20 +4,70 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/drawable-v24/ic_driver.xml" value="0.17135416666666667" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/drawable/boton_redondo.xml" value="0.1390625" />
         <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/drawable/destino_select.xml" value="0.19583333333333333" />
         <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/drawable/ic_account.xml" value="0.17135416666666667" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/drawable/ic_baseline_remove_24.xml" value="0.1" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/drawable/ic_baseline_west_24.xml" value="0.1" />
         <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/drawable/ic_car.xml" value="0.19166666666666668" />
         <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/drawable/ic_conductor.xml" value="0.19166666666666668" />
         <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/drawable/ic_conductorsw.xml" value="0.19166666666666668" />
         <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/drawable/ic_cupones.xml" value="0.19166666666666668" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.12447916666666667" />
         <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/drawable/ic_from.xml" value="0.19583333333333333" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/drawable/ic_google.xml" value="0.13645833333333332" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.12447916666666667" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/drawable/ic_menu_camera.xml" value="0.1" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/drawable/ic_menu_slideshow.xml" value="0.20555555555555555" />
         <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/drawable/ic_money.xml" value="0.19583333333333333" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/drawable/ic_power.xml" value="0.1685185185185185" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/drawable/ic_splash_screen_background.xml" value="0.1" />
         <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/drawable/ic_to.xml" value="0.19583333333333333" />
         <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/drawable/mipbstyle.xml" value="0.16302083333333334" />
         <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/drawable/money.xml" value="0.1" />
         <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/drawable/rounded.xml" value="0.16302083333333334" />
-        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/layout/fragment_map.xml" value="0.3333333333333333" />
-        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/menu/main_menu.xml" value="0.15520833333333334" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/drawable/side_nav_bar.xml" value="0.1359375" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/drawable/splash.xml" value="0.1" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/layout/activity_client_home.xml" value="0.11770833333333333" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/layout/activity_client_home_activitys.xml" value="0.22" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/layout/activity_fullscreen.xml" value="0.1" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/layout/activity_login_type_uber.xml" value="0.1" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/layout/activity_maps.xml" value="0.11770833333333333" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/layout/activity_navigation_client.xml" value="0.1" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/layout/app_bar_client_home.xml" value="0.11770833333333333" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/layout/app_bar_navigation_client.xml" value="0.23324275362318841" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/layout/content_activity.xml" value="0.1" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/layout/content_client_home.xml" value="0.23097826086956522" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/layout/content_main.xml" value="0.1" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/layout/content_navigation_client.xml" value="0.1" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/layout/drawer_header.xml" value="0.1" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/layout/drawer_toolbar.xml" value="0.1" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/layout/fragment_dashboard.xml" value="0.11770833333333333" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/layout/fragment_gallery.xml" value="0.11770833333333333" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/layout/fragment_home.xml" value="0.23097826086956522" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/layout/fragment_login_finish.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/layout/fragment_map.xml" value="0.4025670945157526" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/layout/fragment_notifications.xml" value="0.11770833333333333" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/layout/fragment_slideshow.xml" value="0.11770833333333333" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/layout/header.xml" value="0.22" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/layout/layout_register.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/layout/nav_header_client_home.xml" value="0.11770833333333333" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/layout/nav_header_navigation_client.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/layout/progress_bar_login.xml" value="0.1" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/menu/activity_client_home.xml" value="0.10833333333333334" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/menu/activity_main_drawer.xml" value="0.23489583333333333" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/menu/activity_navigation_client_drawer.xml" value="0.11979166666666667" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/menu/activity_yaesta_drawer.xml" value="0.17282051282051283" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/menu/bottom_nav_menu.xml" value="0.23489583333333333" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/menu/client_home.xml" value="0.23489583333333333" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/menu/client_home_activity.xml" value="0.10833333333333334" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/menu/client_home_activitys.xml" value="0.23489583333333333" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/menu/drawer_menu.xml" value="0.264" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/menu/main.xml" value="0.10833333333333334" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/menu/main2.xml" value="0.10833333333333334" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/menu/main_activity2.xml" value="0.16927083333333334" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/menu/main_menu.xml" value="0.536" />
+        <entry key="..\:/Users/juand/Documents/Proyecto/Taxi/app/src/main/res/menu/prueba.xml" value="0.10833333333333334" />
       </map>
     </option>
   </component>
@@ -70,5 +120,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.6" />
+      </ProjectState>
+    </option>
   </component>
 </project>

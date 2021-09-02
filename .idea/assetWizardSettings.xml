@@ -113,6 +113,7 @@
                                               <map>
                                                 <entry key="color" value="00ba6b" />
                                                 <entry key="imagePath" value="C:\Users\juand\AppData\Local\Temp\baseline_location_on_24.xml" />
+                                                <entry key="trimmed" value="true" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -135,7 +136,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="imagePath" value="C:\Users\juand\Downloads\caricon.png" />
+                                                <entry key="imagePath" value="C:\Users\juand\Downloads\splash_screen.png" />
                                                 <entry key="trimmed" value="true" />
                                               </map>
                                             </option>
@@ -168,7 +169,8 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="outputName" value="ic_launcher_car" />
+                                      <entry key="outputName" value="ic_splash_screen" />
+                                      <entry key="previewDensity" value="XXHIGH" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -363,6 +365,11 @@
                                       </entry>
                                     </map>
                                   </option>
+                                  <option name="values">
+                                    <map>
+                                      <entry key="previewDensity" value="XXHIGH" />
+                                    </map>
+                                  </option>
                                 </PersistentState>
                               </value>
                             </entry>
@@ -391,7 +398,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/local_phone/baseline_local_phone_24.xml" />
+                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/directions_car/baseline_directions_car_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -402,9 +409,8 @@
                         <option name="values">
                           <map>
                             <entry key="autoMirrored" value="true" />
-                            <entry key="color" value="057e0b" />
-                            <entry key="outputName" value="ic_phone" />
-                            <entry key="sourceFile" value="C:\Users\juand\Downloads\car.svg" />
+                            <entry key="outputName" value="ic_baseline_directions_car_24" />
+                            <entry key="sourceFile" value="C:\Users\juand\Downloads\google-seeklogo.com.svg" />
                           </map>
                         </option>
                       </PersistentState>

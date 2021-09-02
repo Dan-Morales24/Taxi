@@ -33,7 +33,6 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -114,12 +113,10 @@
             android:layout_width="match_parent"
             android:layout_height="235dp"
             android:background="@drawable/rounded"
-            android:visibility="invisible"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
 
             <TextView
-                android:id="@+id/textView17"
                 android:layout_width="90dp"
                 android:layout_height="38dp"
                 android:layout_marginStart="30dp"
@@ -274,7 +271,6 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:visibility="invisible"
             android:id="@+id/confirmar"
             android:layout_width="match_parent"
             android:layout_height="235dp"
@@ -328,12 +324,10 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/PedirTaxi"
-            android:visibility="invisible"
             android:layout_width="match_parent"
             android:layout_height="235dp"
             android:background="@drawable/confirm"
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-            >
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
             <ProgressBar
                 android:id="@+id/progressBar"
@@ -392,20 +386,24 @@
                 android:id="@+id/imageView5"
                 android:layout_width="91dp"
                 android:layout_height="83dp"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="37dp"
                 android:src="@drawable/ic_driver"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView16"
-                android:layout_width="176dp"
-                android:layout_height="21dp"
-                android:layout_marginStart="17dp"
+                android:id="@+id/ConductorAsignado"
+                android:layout_width="163dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="32dp"
                 android:layout_marginTop="40dp"
-                android:layout_marginEnd="28dp"
-                android:text="Nombre del conductor"
+                android:layout_marginEnd="31dp"
+                android:gravity="center_vertical"
+                android:text="Conductor"
+                android:textColor="#000000"
+                android:textSize="15dp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/imageButton"
                 app:layout_constraintStart_toEndOf="@+id/imageView5"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -413,26 +411,32 @@
             <RatingBar
 
                 android:id="@+id/ratingBar"
-                android:layout_width="176dp"
-                android:layout_height="26dp"
-                android:layout_marginStart="17dp"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
                 android:layout_marginTop="1dp"
-                android:layout_marginEnd="28dp"
+                android:layout_marginEnd="114dp"
                 android:numStars="5"
-                android:stepSize=".5"
+                android:rating="4"
+                android:stepSize=".1"
+                android:theme="@style/RatingBar.Yellow"
                 app:layout_constraintEnd_toStartOf="@+id/imageButton"
                 app:layout_constraintStart_toEndOf="@+id/imageView5"
-                app:layout_constraintTop_toBottomOf="@+id/textView16"
+                app:layout_constraintTop_toBottomOf="@+id/ConductorAsignado"
                 tools:ignore="MissingConstraints,SpeakableTextPresentCheck" />
 
             <TextView
-                android:id="@+id/textView18"
+                android:id="@+id/Automovil"
                 android:layout_width="176dp"
                 android:layout_height="23dp"
-                android:layout_marginStart="17dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="28dp"
-                android:text="Nombre del vehiculo"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="18dp"
+                android:text="Automovil"
+                android:textColor="#000000"
+                android:textSize="13dp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/imageButton"
                 app:layout_constraintStart_toEndOf="@+id/imageView5"
                 app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
@@ -442,21 +446,20 @@
                 android:layout_width="64dp"
                 android:layout_height="74dp"
                 android:layout_marginTop="40dp"
-                android:layout_marginEnd="25dp"
+                android:layout_marginEnd="20dp"
                 android:src="@drawable/ic_phone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="SpeakableTextPresentCheck" />
 
             <TextView
-                android:id="@+id/textView19"
-                android:layout_width="254dp"
-                android:layout_height="34dp"
-                android:layout_marginStart="78dp"
+                android:id="@+id/statusConductor"
+                android:layout_width="376dp"
+                android:layout_height="38dp"
                 android:layout_marginTop="47dp"
-                android:layout_marginEnd="78dp"
                 android:layout_marginBottom="18dp"
-                android:text="El conductor va en camino"
+                android:gravity="center"
+                android:text="..Esperando status del conductor.."
                 android:textColor="#000000"
                 android:textSize="20sp"
                 android:textStyle="bold"

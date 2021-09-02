@@ -2,8 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
-    app:startDestination="@id/inicio_Fragment">
+    app:startDestination="@id/loginFinish">
 
     <fragment
         android:id="@+id/fragmentLogin"
@@ -45,4 +44,9 @@
             android:id="@+id/action_inicio_Sesion_to_fragmentLogin"
             app:destination="@id/fragmentLogin" />
     </fragment>
+    <fragment
+        android:id="@+id/loginFinish"
+        android:name="com.example.rastreosgps.taxi.LoginFinish"
+        android:label="fragment_login_finish"
+        tools:layout="@layout/fragment_login_finish" />
 </navigation>

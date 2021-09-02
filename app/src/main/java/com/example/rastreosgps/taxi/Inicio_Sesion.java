@@ -21,6 +21,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.rastreosgps.taxi.datosCliente.ClientInfo;
+import com.google.android.gms.common.api.Api;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -135,6 +137,13 @@ public class Inicio_Sesion extends Fragment {
                             Toast.makeText(getContext(), "Es cliente" , Toast.LENGTH_SHORT).show();
                             progressDialog.cancel();
                             getActivity().finish();
+                            // geters and seters de info del cliente.....
+
+                            ClientInfo client =  new ClientInfo();
+                            client.setFirstName(nombre);
+                            client.setPhoneNumber(numero);
+                            client.setRating(0.0);
+
                             startActivity(new Intent(getContext(), MainActivityMaps.class));
 
                         }

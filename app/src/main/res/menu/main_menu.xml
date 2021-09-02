@@ -24,8 +24,7 @@
 
         <menu>
         <item
-        android:id ="@+id/nav_home"
-        android:title="Home"
+            android:title="Home"
         android:icon="@drawable/ic_home"/>
 
         </menu>

@@ -1,11 +1,15 @@
 <resources>
     <string name="app_name">Taxi</string>
-    <string name="title_activity_maps">Map</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_mapa">Mapa</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="register_text">Para comenzar, necesitamos tus datos para tomar tu registro.</string>
+    <string name="first_name">Nombre</string>
+    <string name="last_name">Apellido</string>
+    <string name="phone_number">Telefono</string>
+    <string name="email">Correo electronico</string>
+    <string name="title_activity_navigation_client">NavigationClientActivity</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
@@ -14,10 +18,8 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
-    <string name="title_activity_main2">MainActivity</string>
-    <string name="title_activity_navegacion">navegacion</string>
-    <string name="open">open</string>
-    <string name="close">close</string>
+    <!-- Strings used for fragments for navigation -->
+
     <!-- TODO: Remove or change this placeholder text -->
 
     android:hint="@string/default_text"
