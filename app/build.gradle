@@ -42,7 +42,7 @@ dependencies {
 
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
-    implementation 'com.firebase:geofire-android:2.1.1'
+    implementation 'com.firebase:geofire-android:3.0.0'
     implementation 'com.google.maps.android:android-maps-utils:2.2.3'
     implementation platform('com.google.firebase:firebase-bom:28.3.1')
     implementation 'com.google.android.libraries.places:places:2.4.0'
@@ -60,6 +60,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     implementation 'com.google.firebase:firebase-firestore:23.0.1'
     implementation 'org.jetbrains:annotations:15.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.1'
     def nav_version = "2.3.5"
 
     //material
@@ -99,6 +100,15 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
 
 
+    //retrofit
+    implementation'com.squareup.retrofit2:adapter-rxjava2:2.6.1'
+    implementation'com.squareup.retrofit2:converter-scalars:2.6.1'
+    implementation'com.squareup.retrofit2:converter-gson:2.6.1'
+
+    implementation 'com.sothree.slidinguppanel:library:3.4.0'
+    implementation 'org.greenrobot:eventbus:3.2.0'
+
+
     // Jetpack Compose Integration
     implementation "androidx.navigation:navigation-compose:1.0.0-alpha10"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -108,4 +118,5 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha3'
+
    }

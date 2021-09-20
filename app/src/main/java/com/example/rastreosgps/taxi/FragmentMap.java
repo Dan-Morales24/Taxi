@@ -53,11 +53,13 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -67,6 +69,7 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -93,7 +96,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
 
     private SharedPreferences preferences;
     private SharedPreferences.Editor datos_Activity2;
-    TextView expand;
+    //TextView expand;
     DrawerLayout drawerLayout;
     Toolbar toolbar;
     NavigationView navigationView;
@@ -103,7 +106,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
     private List<Polyline> polylinePaths = new ArrayList<>();
     private ProgressDialog progressDialog;
     TextView mensaje2;
-    MapView mMapView;
+    SupportMapFragment mMapView;
     View mView;
     View vista, confirmar,pedirTaxi,conductor;
     TextView Destino,textdestinopreg,buscando,StatusConductor,automovil,conductorAsignado;
@@ -187,59 +190,43 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
        // nombreUsu = navHeader.findViewById(R.id.NombreUsuario);
        // nombreUsu.setText(nombre);
         //llamada al navigation view para mostrarlo
-        planbasico = getView().findViewById(R.id.planBasico);
-        planplus = getView().findViewById(R.id.planPlus);
-        textdestinopreg = getView().findViewById(R.id.destinoPreg);
-        buscando = getView().findViewById(R.id.Buscando);
+
         // EXPAND es el boton de navegacion de el icono de hamburguesa
-        expand = getView().findViewById(R.id.expandir);
-        progressBar = getView().findViewById(R.id.progressBar);
-        car = getView().findViewById(R.id.gifcar);
-        correcto = getView().findViewById(R.id.correctoimg);
-        pedirTaxi = getView().findViewById(R.id.PedirTaxi);
-        conductor = getView().findViewById(R.id.Conductor);
         drawerLayout = getView().findViewById(R.id.drawer_layout);
         navigationView = getView().findViewById(R.id.nav_view);
-        StatusConductor = getView().findViewById(R.id.statusConductor);
-        automovil = getView().findViewById(R.id.Automovil);
-        conductorAsignado = getView().findViewById(R.id.ConductorAsignado);
 
         // inflar Header y pasar datos para mostrarlos
-        View Cliente = navigationView.getHeaderView(0);
-        ((TextView) Cliente.findViewById(R.id.NombreUsuario)).setText(nombre);
-        ((TextView) Cliente.findViewById(R.id.NombreCorreo)).setText(correo);
+//        View Cliente = navigationView.getHeaderView(0);
+  //      ((TextView) Cliente.findViewById(R.id.NombreUsuario)).setText(nombre);
+    //    ((TextView) Cliente.findViewById(R.id.NombreCorreo)).setText(correo);
         //////////////////////////////////////////////////////////
 
 
         //colocar enfrente del fragmento el navigation view para poder controlarlo
-        navigationView.bringToFront();
+//        navigationView.bringToFront();
         //
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(getActivity(), drawerLayout,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.home);
-        vista = getActivity().findViewById(R.id.solicitar);
-        confirmar = getActivity().findViewById(R.id.confirmar);
+    //    ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(getActivity(), drawerLayout,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+      //  drawerLayout.addDrawerListener(toggle);
+      //  toggle.syncState();
+      //  navigationView.setNavigationItemSelectedListener(this);
+      //  navigationView.setCheckedItem(R.id.home);
         // vista de confirmar pedimento de taxi
-        confirmar.setVisibility(View.GONE);
+      //  confirmar.setVisibility(View.GONE);
         // vista de buscando al conductor mas cercano
-        pedirTaxi.setVisibility(View.GONE);
+        //pedirTaxi.setVisibility(View.GONE);
         //  vista del boton hamburguesas
-        expand.setVisibility(View.VISIBLE);
+      //  expand.setVisibility(View.VISIBLE);
         // vista de los datos del conductor
-        conductor.setVisibility(View.GONE);
+    //    conductor.setVisibility(View.GONE);
         Places.initialize(getActivity().getApplicationContext(), "AIzaSyBp_PG1Db2LqFLDk5PSm1XO_fBtR-C3F3o");
-        mMapView = (MapView) mView.findViewById(R.id.map_view);
+        mMapView = (SupportMapFragment) getChildFragmentManager()
+                .findFragmentById(R.id.map_view);
         if (mMapView != null) {
             mMapView.onCreate(null);
             mMapView.onResume();
             mMapView.getMapAsync(this);
         }
 
-        Enviar_Peticion =(Button)getView().findViewById(R.id.EnviarPeticion);
-            enviar = (Button)getView().findViewById(R.id.enviar);
-            confirmar = (ConstraintLayout)getView().findViewById(R.id.confirmar);
             mensaje2 = (TextView) getView().findViewById(R.id.destino);
             Destino = getView().findViewById(R.id.button_search);
             Destino.setOnClickListener(new View.OnClickListener() {
@@ -250,25 +237,11 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
                 }
            });
 
-            planbasico.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
 
-                    Toast.makeText(getContext(), "Proximamente tipos de planes", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-            planplus.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    Toast.makeText(getContext(), "Proximamente tipos de planes", Toast.LENGTH_SHORT).show();
-
-                }
-            });
 
 
         // boton de hamburguesa para abrir el menu izquierdo
+       /*
         expand.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("WrongConstant")
             @Override
@@ -276,57 +249,11 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
                 drawerLayout.openDrawer(Gravity.START);
             }
         });
+*/
 
 
-        // boton de pedir taxi
-        enviar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                expand.setVisibility(View.GONE);
-                vista.setVisibility(View.GONE);
-                confirmar.setVisibility(View.VISIBLE);
-            }
-        });
 
 
-            // boton de confirmar viaje
-            Enviar_Peticion.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    if(requestbol){
-
-                        geoQuery.removeAllListeners();
-                        requestbol = false;
-                        driverLocationRef.removeEventListener(driverLocationRefListener);
-                        if(driverFoundID!=null){
-                            DatabaseReference driverRef = FirebaseDatabase.getInstance().getReference().child("Drivers").child("customerRequestDrive").child(driverFoundID);
-                            driverRef.setValue(true);
-                            driverFoundID = null;
-                        }
-
-                            driverFound = false;
-                            radius =1;
-                            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("customerRequest");
-                            GeoFire geoFire = new GeoFire(ref);
-                            geoFire.removeLocation(userId);
-
-
-                    }
-
-                        else {
-                        requestbol = true;
-                        String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("customerRequest");
-                        GeoFire geoFire = new GeoFire(ref);
-                        geoFire.setLocation(UserId, new GeoLocation(mLastLocation.getLatitude(),mLastLocation.getLongitude()));
-                        getClosestDriver();
-                        confirmar.setVisibility(View.GONE);
-                        pedirTaxi.setVisibility(View.VISIBLE);
-                    }
-                }
-            });
           /////////////////////////////////
         }
 
@@ -585,9 +512,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
             double latitud = destinationLatLng.latitude;
             double longitud = destinationLatLng.longitude;
             sendRequest(latitud,longitud);
-            vista.setVisibility(View.VISIBLE);
-            confirmar.setVisibility(View.GONE);
-            pedirTaxi.setVisibility(View.GONE);
+
         }
     }
     private void getLocalization() {
@@ -630,6 +555,20 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
                 }
             }
         });
+
+
+        try {
+            boolean success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(),R.raw.uber_maps_style));
+            if(!success)
+                Snackbar.make(getView(),"Error al cargar el estilo de mapa, contacte con soporte",Snackbar.LENGTH_SHORT).show();
+
+        }catch (Exception e){
+
+            Snackbar.make(getView(),e.getMessage(),Snackbar.LENGTH_SHORT).show();
+
+        }
+
+
     }
 
 
@@ -735,14 +674,14 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback, Directi
                     costoxKilometro = distanciaKil * 4.8;
                     costoxMinuto = tiempoMin * 1.8;
                     CostoTotal = costoxKilometro + costoxMinuto;
-                    expand.setVisibility(View.VISIBLE);
+                  //  expand.setVisibility(View.VISIBLE);
                     DecimalFormat format = new DecimalFormat();
                     format.setMaximumFractionDigits(2);
                     if(CostoTotal >30){
-                        ((TextView) getView().findViewById(R.id.costo)).setText("$"+format.format(CostoTotal));
+                        //((TextView) getView().findViewById(R.id.costo)).setText("$"+format.format(CostoTotal));
                     }
                     else{
-                        ((TextView) getView().findViewById(R.id.costo)).setText("$"+tarifaBase);
+                       // ((TextView) getView().findViewById(R.id.costo)).setText("$"+tarifaBase);
                      }
 
 

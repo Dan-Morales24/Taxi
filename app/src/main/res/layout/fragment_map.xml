@@ -1,482 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
-    <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.sothree.slidinguppanel.SlidingUpPanelLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
+    android:id="@+id/activity_main_map"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FragmentMap"
-    android:fitsSystemWindows="true"
-
+    android:gravity="bottom"
+    tools:context=".NavigationClientActivity"
+    app:umanoShadowHeight="180dp"
+    app:umanoPanelHeight="110dp"
     >
 
-
-
-    <com.google.android.material.navigation.NavigationView
-        android:layout_height="match_parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
-        android:id="@+id/nav_view"
-        app:headerLayout="@layout/header"
-        app:menu="@menu/main_menu"
-        android:layout_gravity="start"
-
+        android:layout_height="wrap_content">
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map_view"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         />
 
-
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
-
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-
-            <com.google.android.gms.maps.MapView
-                android:id="@+id/map_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="180dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0"
-                tools:ignore="SpeakableTextPresentCheck" />
-
-            <TextView
-                android:id="@+id/destino"
-                android:layout_width="347dp"
-                android:layout_height="43dp"
-                android:layout_marginTop="65dp"
-                android:background="@drawable/destino_select"
-                android:clickable="true"
-                android:drawableStart="@drawable/ic_from"
-                android:gravity="center"
-                android:paddingStart="12dp"
-                android:paddingEnd="35dp"
-                android:text="Elegir ubicacion"
-                android:textColor="#000000"
-                android:textSize="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/map_view"
-                tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck" />
-
-
-            <TextView
-                android:id="@+id/button_search"
-                android:layout_width="347dp"
-                android:layout_height="43dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/destino_select"
-                android:drawableStart="@drawable/ic_to"
-                android:gravity="center"
-                android:paddingStart="12dp"
-                android:paddingEnd="35dp"
-                android:text="Elegir destino"
-                android:textColor="#000000"
-                android:textSize="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.489"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/destino" />
-
-            <TextView
-                android:id="@+id/expandir"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:clickable="true"
-                android:drawableLeft="@mipmap/menu"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/map_view"
-                tools:ignore="SpeakableTextPresentCheck" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-
-
-            android:id="@+id/solicitar"
-            android:layout_width="match_parent"
-            android:layout_height="235dp"
-            android:background="@drawable/rounded"
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-
-
-            <TextView
-                android:layout_width="90dp"
-                android:layout_height="38dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="66dp"
-                android:drawableRight="@drawable/ic_cupones"
-                android:text="Cupones de descuento"
-                android:textColor="#000000"
-                android:textSize="11dp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView10" />
-
-            <TextView
-                android:id="@+id/textView15"
-                android:layout_width="73dp"
-                android:layout_height="20dp"
-                android:layout_marginEnd="30dp"
-                android:drawableRight="@drawable/ic_money"
-                android:text="Efectivo"
-                android:textColor="#000000"
-                android:textSize="11dp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView11" />
-
-            <TextView
-                android:id="@+id/textView11"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="66dp"
-                android:layout_marginEnd="30dp"
-                android:text="Metodo de pago"
-                android:textColor="#000000"
-                android:textSize="10dp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView9" />
-
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="108dp"
-                android:layout_marginTop="7dp"
-                android:layout_marginEnd="107dp"
-                android:src="@drawable/estandard"
-                app:layout_constraintEnd_toStartOf="@+id/planBasico"
-                app:layout_constraintStart_toEndOf="@+id/planPlus"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="MissingConstraints" />
-
-            <ImageView
-                android:id="@+id/planBasico"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="38dp"
-                android:layout_marginTop="7dp"
-                android:clickable="true"
-                android:src="@drawable/basico"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck,TouchTargetSizeCheck,TouchTargetSizeCheck,TouchTargetSizeCheck" />
-
-            <TextView
-                android:id="@+id/textView10"
-                android:layout_width="53dp"
-                android:layout_height="14dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginStart="32dp"
-                android:text="Plan Basico"
-                android:textColor="#000000"
-                android:textSize="10dp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/planBasico" />
-
-            <ImageView
-                android:id="@+id/planPlus"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="7dp"
-                android:layout_marginEnd="38dp"
-                android:clickable="true"
-                android:src="@drawable/coche"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck,SpeakableTextPresentCheck,SpeakableTextPresentCheck,SpeakableTextPresentCheck,TouchTargetSizeCheck,TouchTargetSizeCheck,TouchTargetSizeCheck" />
-
-            <TextView
-                android:id="@+id/textView7"
-                android:layout_width="68dp"
-                android:layout_height="16dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginStart="88dp"
-                android:layout_marginEnd="90dp"
-                android:text="Plan Standard"
-                android:textColor="#1132DD"
-                android:textSize="10dp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/textView9"
-                app:layout_constraintStart_toEndOf="@+id/textView10"
-                app:layout_constraintTop_toBottomOf="@+id/imageView3" />
-
-            <TextView
-                android:id="@+id/textView9"
-                android:layout_width="44dp"
-                android:layout_height="16dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginEnd="36dp"
-                android:text="Plan Plus"
-                android:textColor="#000000"
-                android:textSize="10dp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/planPlus" />
-
-            <TextView
-                android:id="@+id/costo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="181dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="181dp"
-                android:text="$0"
-                android:textColor="#000000"
-                android:textSize="44dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView7"
-                tools:ignore="UnknownId" />
-
-            <Button
-                android:id="@+id/enviar"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|top"
-                android:layout_marginStart="80dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="80dp"
-                android:layout_marginBottom="9dp"
-                android:background="@drawable/boton_redondo"
-                android:scaleType="centerCrop"
-                android:text="Pedir taxi"
-                android:textColor="#ffffff"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView15"
-                tools:ignore="MissingConstraints" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/confirmar"
-            android:layout_width="match_parent"
-            android:layout_height="235dp"
-            android:background="@drawable/confirm"
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-
-
-            <Button
-                android:id="@+id/EnviarPeticion"
-                android:layout_width="187dp"
-                android:layout_height="44dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/boton_redondo"
-                android:text="Confirmar"
-                android:textColor="#ffffff"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/correctoimg"
-                tools:ignore="TouchTargetSizeCheck" />
-
-            <ImageView
-                android:id="@+id/correctoimg"
-                android:layout_width="128dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="142dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="141dp"
-                android:src="@drawable/ic_taxi"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/destinoPreg" />
-
-            <TextView
-                android:id="@+id/destinoPreg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="174dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="179dp"
-                android:text="¿Su destino es correcto?"
-                android:textColor="#ffffff"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/PedirTaxi"
-            android:layout_width="match_parent"
-            android:layout_height="235dp"
-            android:background="@drawable/confirm"
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-
-            <ProgressBar
-                android:id="@+id/progressBar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="323dp"
-                android:layout_height="11dp"
-                android:layout_marginStart="44dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="44dp"
-
-                android:indeterminate="true"
-                android:indeterminateTint="#ffff"
-                android:scaleY="2"
-                app:layout_anchorGravity="center"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/Buscando"
-                android:layout_width="323dp"
-                android:layout_height="49dp"
-                android:layout_marginTop="4dp"
-                android:text="Estamos buscando un conductor espera un momento ..."
-                android:textAlignment="center"
-                android:textColor="#ffffff"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/progressBar" />
-
-            <pl.droidsonroids.gif.GifImageView
-                android:id="@+id/gifcar"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_marginTop="12dp"
-                android:src="@drawable/driving"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/Buscando" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-
-
-            android:id="@+id/Conductor"
-            android:layout_width="match_parent"
-            android:layout_height="215dp"
-            android:background="@drawable/rounded"
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-
-
-            <ImageView
-                android:id="@+id/imageView5"
-                android:layout_width="91dp"
-                android:layout_height="83dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="37dp"
-                android:src="@drawable/ic_driver"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/ConductorAsignado"
-                android:layout_width="163dp"
-                android:layout_height="35dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="40dp"
-                android:layout_marginEnd="31dp"
-                android:gravity="center_vertical"
-                android:text="Conductor"
-                android:textColor="#000000"
-                android:textSize="15dp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/imageButton"
-                app:layout_constraintStart_toEndOf="@+id/imageView5"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <RatingBar
-
-                android:id="@+id/ratingBar"
-                style="?android:attr/ratingBarStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="1dp"
-                android:layout_marginEnd="114dp"
-                android:numStars="5"
-                android:rating="4"
-                android:stepSize=".1"
-                android:theme="@style/RatingBar.Yellow"
-                app:layout_constraintEnd_toStartOf="@+id/imageButton"
-                app:layout_constraintStart_toEndOf="@+id/imageView5"
-                app:layout_constraintTop_toBottomOf="@+id/ConductorAsignado"
-                tools:ignore="MissingConstraints,SpeakableTextPresentCheck" />
-
-            <TextView
-                android:id="@+id/Automovil"
-                android:layout_width="176dp"
-                android:layout_height="23dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="18dp"
-                android:text="Automovil"
-                android:textColor="#000000"
-                android:textSize="13dp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/imageButton"
-                app:layout_constraintStart_toEndOf="@+id/imageView5"
-                app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
-
-            <ImageButton
-                android:id="@+id/imageButton"
-                android:layout_width="64dp"
-                android:layout_height="74dp"
-                android:layout_marginTop="40dp"
-                android:layout_marginEnd="20dp"
-                android:src="@drawable/ic_phone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="SpeakableTextPresentCheck" />
-
-            <TextView
-                android:id="@+id/statusConductor"
-                android:layout_width="376dp"
-                android:layout_height="38dp"
-                android:layout_marginTop="47dp"
-                android:layout_marginBottom="18dp"
-                android:gravity="center"
-                android:text="..Esperando status del conductor.."
-                android:textColor="#000000"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView5" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
-
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-</androidx.drawerlayout.widget.DrawerLayout>
-
+    <TextView
+        android:id="@+id/destino"
+        android:layout_width="347dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="65dp"
+        android:background="@drawable/destino_select"
+        android:clickable="true"
+        android:drawableStart="@drawable/ic_from"
+        android:gravity="center"
+        android:paddingStart="12dp"
+        android:paddingEnd="35dp"
+        android:text="Elegir ubicacion"
+        android:textColor="#000000"
+        android:textSize="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/map_view"
+        tools:ignore="NotSibling,TouchTargetSizeCheck,TouchTargetSizeCheck" />
+
+        <TextView
+            android:id="@+id/button_search"
+            android:layout_width="347dp"
+            android:layout_height="43dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/destino_select"
+            android:drawableStart="@drawable/ic_to"
+            android:gravity="center"
+            android:paddingStart="12dp"
+            android:paddingEnd="35dp"
+            android:text="Elegir destino"
+            android:textColor="#000000"
+            android:textSize="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.489"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/destino" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        >
+
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.sothree.slidinguppanel.SlidingUpPanelLayout>

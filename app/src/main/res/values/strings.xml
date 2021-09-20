@@ -18,6 +18,21 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+    <string name="permission_requiere">Error: Permission Location Required</string>
+    <string name="drivers_not_found">No encontramos conductores</string>
+    <string name="not_found_key">No se enecontro conductor con key </string>
+    <string name="welcome">Buenos dias</string>
+    <string name="choose_a_saved_place">Elegir tu lugar favorito</string>
+    <string name="where_to">A donde te dirijes ?</string>
+    <string name="city_name_empty">El nombre de la ciudad esta vacio</string>
+    <string name="title_activity_request_driver">RequestDriverActivity</string>
+    <string name="pay_by_cash">Pago con efectivo</string>
+    <string name="confirm_uber">Confirmar metodo de pago</string>
+    <string name="confirm_pickup_spot">Confirma tu ubicación</string>
+    <string name="address_demo">Av. Independencia #45 San Simon Tlatlahuquitepec</string>
+    <string name="confirm_taxi">confirmar viaje</string>
+    <string name="meet_driver_here">recojer en este punto al cliente?</string>
+    <string name="finding_your_ride">Estamos buscando al conductor mas cercano, porfavor espere...</string>
     <!-- Strings used for fragments for navigation -->
 
     <!-- TODO: Remove or change this placeholder text -->

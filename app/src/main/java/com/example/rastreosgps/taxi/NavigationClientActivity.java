@@ -37,11 +37,12 @@ import java.util.Map;
 
 public class NavigationClientActivity extends AppCompatActivity {
 
-    private static final int PICK_IMAGE_REQUEST = 1000;
+
+    private ActivityNavigationClientBinding binding;
     private AppBarConfiguration mAppBarConfiguration;
+    private static final int PICK_IMAGE_REQUEST = 1000;
     private DrawerLayout drawer;
     private NavigationView navigationView;
-    private ActivityNavigationClientBinding binding;
     private NavController navController;
     private ImageView img_avatar;
     private Uri imageUrl;

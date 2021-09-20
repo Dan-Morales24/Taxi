@@ -60,10 +60,9 @@ public class LoginTypeUber extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener listener;
     FirebaseDatabase database;
     DatabaseReference riderInfoRef;
-
-
     @BindView(R.id.progress_login_bar)
     ProgressBar progress_login_bar;
+
 
     @Override
     public void onStart() {
@@ -95,23 +94,23 @@ public class LoginTypeUber extends AppCompatActivity {
     private void init() {
 
         ButterKnife.bind(this);
-
         database = FirebaseDatabase.getInstance();
-        riderInfoRef = database.getReference(Common.DRIVER_INFO_REFERENCE);
+        //RIDER
+        riderInfoRef = database.getReference(Common.RIDER_INFO_REFERENCE);
+        firebaseAuth = FirebaseAuth.getInstance();
+
         providers = Arrays.asList(
                 new AuthUI.IdpConfig.PhoneBuilder().build(),
                 new AuthUI.IdpConfig.GoogleBuilder().build()
         );
 
-        firebaseAuth = FirebaseAuth.getInstance();
+
         listener = myFirebaseAuth -> {
 
             FirebaseUser user = myFirebaseAuth.getCurrentUser();
-            if(user != null)
+            if(user != null) {
 
-            {
-
-                FirebaseMessaging.getInstance().getToken()
+                        FirebaseMessaging.getInstance().getToken()
                         .addOnCompleteListener(new OnCompleteListener<String>() {
                             @Override
                             public void onComplete(@NonNull Task<String> task) {
@@ -122,30 +121,22 @@ public class LoginTypeUber extends AppCompatActivity {
 
                                 // Get new FCM registration token
                                 String token = task.getResult();
-
-
                                 Log.d("Token final: ", token);
                                 Toast.makeText(LoginTypeUber.this, token, Toast.LENGTH_SHORT).show();
                                 UserUtils.updateToken(LoginTypeUber.this,token);
 
+                                    }
+                                });
+
+                                checkUserFromFirebase();
+                                }
+                                    else {
+                                            showLoginLayout();
+                                           }
+                                };
+
                             }
-                        });
 
-
-
-
-
-
-                checkUserFromFirebase();
-            }
-            else {
-
-                showLoginLayout();
-
-            }
-        };
-
-    }
 
     private void checkUserFromFirebase() {
 
