@@ -33,6 +33,8 @@
     <string name="confirm_taxi">confirmar viaje</string>
     <string name="meet_driver_here">recojer en este punto al cliente?</string>
     <string name="finding_your_ride">Estamos buscando al conductor mas cercano, porfavor espere...</string>
+    <string name="token_not_found">Token no encontrado</string>
+    <string name="request_driver_failed">Fallo al enviar la peticion al conductor</string>
     <!-- Strings used for fragments for navigation -->
 
     <!-- TODO: Remove or change this placeholder text -->

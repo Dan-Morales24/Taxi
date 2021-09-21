@@ -30,6 +30,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class Common {
@@ -37,13 +38,15 @@ public class Common {
 
     public static final String RIDER_INFO_REFERENCE ="Riders" ;
     public static final String TOKEN_REFERENCE = "Token";
+    public static final String TOKEN_REFERENCE_DRIVERS = "TokenDrivers";
     public static final String DRIVERS_LOCATION_REFERENCES ="DriversLocation" ;//same as Driver App
     public static final String DRIVER_INFO_REFERENCE = "Drivers";
+    public static final String REQUEST_DRIVER_TITLE = "Peticion de Viaje";
+    public static final String RIDER_PICKUP_LOCATION = "PickupLocation";
     public static RiderModel currentRide;
     public static final String NOTI_TITLE ="title";
     public static final String NOTI_CONTENT ="message";
-    
-    public static Set<DriverGeoModel> driversFound = new HashSet<DriverGeoModel>();
+    public static Map<String, DriverGeoModel> driversFound = new HashMap<>();
     public static HashMap<String, Marker> markerList = new HashMap<>();
     public static HashMap<String, AnimationModel> driverLocationSubscribe = new HashMap<String, AnimationModel>();
 
