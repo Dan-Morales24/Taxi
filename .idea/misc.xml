@@ -4,6 +4,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/juand/Documents/Proyecto taxi/TaxiCliente/app/src/main/res/drawable/ic_baseline_navigate_next_24.xml" value="0.2703125" />
+        <entry key="..\:/Users/juand/Documents/Proyecto taxi/TaxiCliente/app/src/main/res/drawable/ic_baseline_phone_24.xml" value="0.2703125" />
+        <entry key="..\:/Users/juand/Documents/Proyecto taxi/TaxiCliente/app/src/main/res/drawable/ic_baseline_send_24.xml" value="0.2703125" />
         <entry key="..\:/Users/juand/Documents/Proyecto taxi/TaxiCliente/app/src/main/res/drawable/ic_car_map_background.xml" value="0.2703125" />
         <entry key="..\:/Users/juand/Documents/Proyecto taxi/TaxiCliente/app/src/main/res/drawable/ic_splash_screen_background.xml" value="0.1" />
         <entry key="..\:/Users/juand/Documents/Proyecto taxi/TaxiCliente/app/src/main/res/drawable/splash.xml" value="0.1" />
@@ -11,12 +13,14 @@
         <entry key="..\:/Users/juand/Documents/Proyecto taxi/TaxiCliente/app/src/main/res/layout/activity_navigation_client.xml" value="0.20104166666666667" />
         <entry key="..\:/Users/juand/Documents/Proyecto taxi/TaxiCliente/app/src/main/res/layout/activity_request_driver_activity.xml" value="0.4" />
         <entry key="..\:/Users/juand/Documents/Proyecto taxi/TaxiCliente/app/src/main/res/layout/app_bar_navigation_client.xml" value="0.25052083333333336" />
+        <entry key="..\:/Users/juand/Documents/Proyecto taxi/TaxiCliente/app/src/main/res/layout/content_navigation_client.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/juand/Documents/Proyecto taxi/TaxiCliente/app/src/main/res/layout/destination_info_windows.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/juand/Documents/Proyecto taxi/TaxiCliente/app/src/main/res/layout/elegir_destino.xml" value="0.19427083333333334" />
         <entry key="..\:/Users/juand/Documents/Proyecto taxi/TaxiCliente/app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="..\:/Users/juand/Documents/Proyecto taxi/TaxiCliente/app/src/main/res/layout/fragment_map.xml" value="0.2698986975397974" />
         <entry key="..\:/Users/juand/Documents/Proyecto taxi/TaxiCliente/app/src/main/res/layout/layout_confirm_pickup.xml" value="0.4" />
         <entry key="..\:/Users/juand/Documents/Proyecto taxi/TaxiCliente/app/src/main/res/layout/layout_confirm_uber.xml" value="0.4" />
+        <entry key="..\:/Users/juand/Documents/Proyecto taxi/TaxiCliente/app/src/main/res/layout/layout_driver_info.xml" value="0.536" />
         <entry key="..\:/Users/juand/Documents/Proyecto taxi/TaxiCliente/app/src/main/res/layout/layout_finding_your_driver.xml" value="0.6" />
         <entry key="..\:/Users/juand/Documents/Proyecto taxi/TaxiCliente/app/src/main/res/layout/nav_header_navigation_client.xml" value="0.13269927536231885" />
         <entry key="..\:/Users/juand/Documents/Proyecto taxi/TaxiCliente/app/src/main/res/layout/origin_info_windows.xml" value="0.6" />

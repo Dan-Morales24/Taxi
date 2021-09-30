@@ -393,7 +393,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/location_searching/baseline_location_searching_24.xml" />
+                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/send/baseline_send_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -404,8 +404,7 @@
                         <option name="values">
                           <map>
                             <entry key="autoMirrored" value="true" />
-                            <entry key="color" value="0000ff" />
-                            <entry key="outputName" value="ic_baseline_location" />
+                            <entry key="outputName" value="ic_baseline_send_24" />
                             <entry key="sourceFile" value="C:\Users\juand\Downloads\google-seeklogo.com.svg" />
                           </map>
                         </option>

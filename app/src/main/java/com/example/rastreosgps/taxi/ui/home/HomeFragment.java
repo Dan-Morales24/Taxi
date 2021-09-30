@@ -149,14 +149,15 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, IFireb
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        init();
-        initViews(root);
         //obtener el mapa y notificar cuando el mapa sea lanzado
         mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
 
+
+        initViews(root);
+        init();
         return root;
     }
 
@@ -207,53 +208,88 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, IFireb
 
         iGoogleAPI = RetrofitClient.getInstance().create(IGoogleAPI.class);
 
+
+
         iFirebaseFailedListener = this;
         iFirebaseDriverInfoListener = this;
+        if (ActivityCompat.checkSelfPermission(getContext(),Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            Snackbar.make(mapFragment.getView(),getString(R.string.permission_requiere),Snackbar.LENGTH_SHORT).show();
+            return;
+        }
 
-        locationRequest = new LocationRequest();
-        locationRequest.setSmallestDisplacement(10f);
-        locationRequest.setInterval(5000);
-        locationRequest.setFastestInterval(3000);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        buildLocationRequest();
+        buildLocationCallBack();
+        updateLocation();
+        loadAvaliableDrivers();
 
-        locationCallback = new LocationCallback() {
+    }
 
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                super.onLocationResult(locationResult);
-                LatLng newPosition = new LatLng(locationResult.getLastLocation().getLatitude(), locationResult
-                        .getLastLocation().getLongitude());
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newPosition, 18f));
-
-
-                if (firstTime) {
-
-                    previousLocation = currentLocation = locationResult.getLastLocation();
-                    firstTime = false;
-
-                    setRestrictPlaceInCountry(locationResult.getLastLocation());
-
-                } else {
-                    previousLocation = currentLocation;
-                    currentLocation = locationResult.getLastLocation();
-                }
-                if (previousLocation.distanceTo(currentLocation) / 1000 <= LIMIT_RANGE)
-                    loadAvaliableDrivers();
-                else {
-
-                    // nada que hacer
-                }
-
-
-            }
-        };
+    private void updateLocation() {
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
-        loadAvaliableDrivers();
+
+
+
+    }
+
+    private void buildLocationCallBack() {
+
+            if(locationCallback == null){
+
+
+                locationCallback = new LocationCallback() {
+
+                    @Override
+                    public void onLocationResult(LocationResult locationResult) {
+                        super.onLocationResult(locationResult);
+                        LatLng newPosition = new LatLng(locationResult.getLastLocation().getLatitude(), locationResult
+                                .getLastLocation().getLongitude());
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newPosition, 18f));
+
+
+                        if (firstTime) {
+
+                            previousLocation = currentLocation = locationResult.getLastLocation();
+                            firstTime = false;
+
+                            setRestrictPlaceInCountry(locationResult.getLastLocation());
+
+                        } else {
+                            previousLocation = currentLocation;
+                            currentLocation = locationResult.getLastLocation();
+                        }
+                        if (previousLocation.distanceTo(currentLocation) / 1000 <= LIMIT_RANGE)
+                            loadAvaliableDrivers();
+                        else {
+
+                            // nada que hacer
+                        }
+
+
+                    }
+                };
+
+            }
+
+    }
+
+    private void buildLocationRequest()  {
+
+        if(locationRequest == null){
+
+            locationRequest = new LocationRequest();
+            locationRequest.setSmallestDisplacement(10f);
+            locationRequest.setInterval(5000);
+            locationRequest.setFastestInterval(3000);
+            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        }
+
 
     }
 
@@ -286,23 +322,25 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, IFireb
                     try {
                         addressList = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(), 1);
                         if (addressList.size() >0)
-                        cityName = addressList.get(0).getLocality();
+                        cityName = addressList.get(0).getPostalCode();
+
+
                         if(!TextUtils.isEmpty(cityName)) {
                             //query
                             DatabaseReference driver_location_ref = FirebaseDatabase.getInstance()
                                     .getReference(Common.DRIVERS_LOCATION_REFERENCES)
                                     .child(cityName);
-                            GeoFire gf = new GeoFire(driver_location_ref);
-                            GeoQuery geoQuery = gf.queryAtLocation(new GeoLocation(location.getLatitude()
+                                    GeoFire gf = new GeoFire(driver_location_ref);
+                                    GeoQuery geoQuery = gf.queryAtLocation(new GeoLocation(location.getLatitude()
                                     , location.getLongitude()), distance);
-                            geoQuery.removeAllListeners();
+                                    geoQuery.removeAllListeners();
 
-                            geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
-                                @Override
-                                public void onKeyEntered(String key, GeoLocation location) {
-                                   if (!Common.driversFound.containsKey(key))
-                                    Common.driversFound.put(key, new DriverGeoModel(key,location));
-                                }
+                                    geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
+                                    @Override
+                                    public void onKeyEntered(String key, GeoLocation location) {
+                                       if (!Common.driversFound.containsKey(key))
+                                        Common.driversFound.put(key, new DriverGeoModel(key,location));
+                                    }
 
                                 @Override
                                 public void onKeyExited(String key) {
@@ -474,6 +512,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, IFireb
                     public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
                         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                                 && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                            Snackbar.make(mapFragment.getView(),getString(R.string.permission_requiere),Snackbar.LENGTH_SHORT).show();
                             return;
                         }
                         mMap.setMyLocationEnabled(true);
@@ -502,6 +542,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, IFireb
                         params.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
                         params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
                         params.setMargins(0,0,0,250);
+
+                        //update Location
+                        buildLocationRequest();
+                        buildLocationCallBack();
+                        updateLocation();
 
 
             }
@@ -565,10 +610,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, IFireb
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if(!snapshot.hasChildren()){
                         if (Common.markerList.get(driverGeoModel.getKey())!= null)
-                            Common.markerList.get(driverGeoModel.getKey()).remove();
-                            Common.markerList.remove(driverGeoModel.getKey());
-                            Common.driverLocationSubscribe.remove(driverGeoModel.getKey());
-                            driverLocation.removeEventListener(this);
+                            Common.markerList.get(driverGeoModel.getKey()).remove(); // remove marker
+                            Common.markerList.remove(driverGeoModel.getKey());// remove marker info from hash map
+                            Common.driverLocationSubscribe.remove(driverGeoModel.getKey()); //remove driver information
+                           if(Common.driversFound != null && Common.driversFound.size() > 0) // remove local location of driver
+                                Common.driversFound.remove(driverGeoModel.getKey());
+                               driverLocation.removeEventListener(this);
+
 
                     }
                     else {
@@ -622,7 +670,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, IFireb
             compositeDisposable.add(iGoogleAPI.getDirections("driving",
                     "less_driving",
                     from,to,
-                    getString(R.string.google_maps_key))
+                    getActivity().getString(R.string.google_maps_key))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(returnResult ->{

@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 
 import com.example.rastreosgps.taxi.Common.Common;
 import com.example.rastreosgps.taxi.Model.DriverGeoModel;
+import com.example.rastreosgps.taxi.Model.EventBus.SelectedPlaceEvent;
 import com.example.rastreosgps.taxi.Model.FCMSendData;
 import com.example.rastreosgps.taxi.Model.TokenModel;
 import com.example.rastreosgps.taxi.R;
@@ -57,7 +58,7 @@ public class UserUtils {
 
     }
 
-    public static void sendRequestToDriver(Context context, RelativeLayout main_layout, DriverGeoModel foundDriver, LatLng target) {
+    public static void sendRequestToDriver(Context context, RelativeLayout main_layout, DriverGeoModel foundDriver, SelectedPlaceEvent selectedPlaceEvent) {
 
         CompositeDisposable compositeDisposable = new CompositeDisposable();
         IFCMService ifcmService = RetrofitFCMClient.getInstance().create(IFCMService.class);
@@ -70,17 +71,28 @@ public class UserUtils {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()){
 
+                        if (snapshot.exists()){
                             TokenModel tokenModel = snapshot.getValue(TokenModel.class);
                             Map<String,String> notificationData = new HashMap<>();
                             notificationData.put(Common.NOTI_TITLE,Common.REQUEST_DRIVER_TITLE);
                             notificationData.put(Common.NOTI_CONTENT,"Solicitud de viaje en proceso");
-                            notificationData.put(Common.RIDER_PICKUP_LOCATION, new StringBuilder("")
-                            .append(target.latitude)
+                            notificationData.put(Common.RIDER_KEY,FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+                            notificationData.put(Common.RIDER_PICKUP_LOCATION_STRING,selectedPlaceEvent.getOriginString());
+                             notificationData.put(Common.RIDER_PICKUP_LOCATION, new StringBuilder("")
+                            .append(selectedPlaceEvent.getOrigin().latitude)
                             .append(",")
-                            .append(target.longitude)
+                            .append(selectedPlaceEvent.getOrigin().longitude)
                             .toString());
+
+
+                            notificationData.put(Common.RIDER_DESTINATION_STRING,selectedPlaceEvent.getDestinationString());
+                            notificationData.put(Common.RIDER_DESTINATION, new StringBuilder("")
+                                    .append(selectedPlaceEvent.getDestination().latitude)
+                                    .append(",")
+                                    .append(selectedPlaceEvent.getDestination().longitude)
+                                    .toString());
 
                             FCMSendData fcmSendData = new FCMSendData(tokenModel.getToken(),notificationData);
 

@@ -35,6 +35,13 @@
     <string name="finding_your_ride">Estamos buscando al conductor mas cercano, porfavor espere...</string>
     <string name="token_not_found">Token no encontrado</string>
     <string name="request_driver_failed">Fallo al enviar la peticion al conductor</string>
+    <string name="no_driver_accept_request">No logramos conectar tu viaje con algun conductor</string>
+    <string name="trip_not_found">No se encontro informacion del viaje: </string>
+    <string name="uber_x">Nombre del auto</string>
+    <string name="car_number_example">123456</string>
+    <string name="driver_name_example">Luciano Mora</string>
+    <string name="ascii_dot">■</string>
+    <string name="lenguaje_example">Español</string>
     <!-- Strings used for fragments for navigation -->
 
     <!-- TODO: Remove or change this placeholder text -->
