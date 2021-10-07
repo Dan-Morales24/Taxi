@@ -11,7 +11,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.collection.ArraySet;
@@ -22,8 +25,10 @@ import com.example.rastreosgps.taxi.Model.AnimationModel;
 import com.example.rastreosgps.taxi.Model.DriverGeoModel;
 import com.example.rastreosgps.taxi.Model.RiderModel;
 import com.example.rastreosgps.taxi.R;
+import com.example.rastreosgps.taxi.RequestDriverActivity;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.maps.android.ui.IconGenerator;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -51,9 +56,11 @@ public class Common {
     public static final String REQUEST_DRIVER_ACCEPT = "Accept";
     public static final String TRIP_KEY = "TripKey";
     public static final String TRIP = "Trips";
+    public static final String RIDER_COMPLETE_TRIP = "DriverCompleteTrip";
     public static RiderModel currentRide;
     public static final String NOTI_TITLE ="title";
     public static final String NOTI_CONTENT ="message";
+    public static final String REQUEST_DRIVER_DECLINE_AND_REMOVE_TRIP = "Viaje cancelado";
     public static Map<String, DriverGeoModel> driversFound = new HashMap<>();
     public static HashMap<String, Marker> markerList = new HashMap<>();
     public static HashMap<String, AnimationModel> driverLocationSubscribe = new HashMap<String, AnimationModel>();
@@ -200,5 +207,21 @@ public class Common {
         va.start();
         return va;
 
+    }
+
+    public static Bitmap createIconWithDuration(Context context, String duration) {
+        View view = LayoutInflater.from(context).inflate(R.layout.pickup_info_with_duration_windows, null);
+        TextView txt_time = (TextView) view.findViewById(R.id.txt_duration);
+        txt_time.setText(Common.getNumberFromText(duration));
+
+        IconGenerator generator = new IconGenerator(context);
+        generator.setContentView(view);
+        generator.setBackground(new ColorDrawable(Color.TRANSPARENT));
+        return generator.makeIcon();
+    }
+
+    private static String getNumberFromText(String duration) {
+
+        return duration.substring(0,duration.indexOf(" "));
     }
 }

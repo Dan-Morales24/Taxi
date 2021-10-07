@@ -40,6 +40,7 @@ import com.example.rastreosgps.taxi.Model.AnimationModel;
 import com.example.rastreosgps.taxi.Model.DriverGeoModel;
 import com.example.rastreosgps.taxi.Model.DriverInfoModel;
 import com.example.rastreosgps.taxi.Model.EventBus.SelectedPlaceEvent;
+import com.example.rastreosgps.taxi.Model.EventBus.ShowNotificationFinishTrip;
 import com.example.rastreosgps.taxi.Model.GeoQueryModel;
 import com.example.rastreosgps.taxi.R;
 import com.example.rastreosgps.taxi.Remote.IGoogleAPI;
@@ -88,6 +89,8 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -95,6 +98,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 import butterknife.BindView;
@@ -135,6 +139,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, IFireb
     private String cityName;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private IGoogleAPI iGoogleAPI;
+    private boolean isNextLaunch= false;
 
 
     @Override
@@ -193,7 +198,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, IFireb
                           //  Toast.makeText(this,"origen: "+place.getLatLng(),Toast.LENGTH_SHORT).show();
                          //   Snackbar.make(getView(),"origen: "+new LatLng(location.getLatitude(),location.getLongitude())+ "destino: "+new LatLng(place.getLatLng().latitude,place.getLatLng().longitude),Snackbar.LENGTH_LONG).show();
                             startActivity(new Intent(getContext(), RequestDriverActivity.class));
-                            EventBus.getDefault().postSticky(new SelectedPlaceEvent(origin,destination));
+                            EventBus.getDefault().postSticky(new SelectedPlaceEvent(origin,destination,place.getAddress()));
 
                         });
 
@@ -232,8 +237,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, IFireb
             return;
         }
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
-
-
 
     }
 
@@ -307,6 +310,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, IFireb
 
     }
 
+
+
     private void loadAvaliableDrivers() {
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -320,9 +325,24 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, IFireb
                     Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
                     List<Address> addressList;
                     try {
-                        addressList = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(), 1);
-                        if (addressList.size() >0)
-                        cityName = addressList.get(0).getPostalCode();
+
+                        if (location != null){
+
+                        }
+
+
+                        if (location== null){
+
+
+                        }
+                        else{
+
+                            addressList = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(), 1);
+                            if (addressList.size() >0)
+                                cityName = addressList.get(0).getPostalCode();
+
+                        }
+
 
 
                         if(!TextUtils.isEmpty(cityName)) {
@@ -485,6 +505,12 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, IFireb
 
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+
+    }
 
     @Override
     public void onDestroy() {
@@ -497,6 +523,16 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, IFireb
     @Override
     public void onResume() {
         super.onResume();
+        if(!isNextLaunch){
+
+            loadAvaliableDrivers();
+
+        }
+            else{
+                isNextLaunch = true;
+
+        }
+
     }
 
     @Override
@@ -676,8 +712,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, IFireb
                     .subscribe(returnResult ->{
                         Log.d("API_RETURN", returnResult);
 
-                 //       Toast.makeText(getContext(),"Origen: "+from+"destino: "+to,Toast.LENGTH_SHORT).show();
-
+                 //      The device might have stale dexed jars that don't match the current version (dexopt error).
+                        //In order to proceed, you will have to uninstall the existing application
+                        //
+                        //WARNING: Uninstalling will remove the application data!
 
                         try {
                             JSONObject jsonObject = new JSONObject(returnResult);

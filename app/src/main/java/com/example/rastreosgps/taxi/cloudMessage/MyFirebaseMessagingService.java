@@ -8,8 +8,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.rastreosgps.taxi.Common.Common;
+import com.example.rastreosgps.taxi.Model.EventBus.DeclineRequestAndRemoveTripFromDriver;
 import com.example.rastreosgps.taxi.Model.EventBus.DeclineRequestFromDriver;
 import com.example.rastreosgps.taxi.Model.EventBus.DriverAcceptTripEvent;
+import com.example.rastreosgps.taxi.Model.EventBus.DriverCompleteTripEvent;
 import com.example.rastreosgps.taxi.RequestDriverActivity;
 import com.example.rastreosgps.taxi.Utils.UserUtils;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,11 +45,23 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     EventBus.getDefault().postSticky(new DeclineRequestFromDriver());
                 }
 
+                else if(dataRecv.get(Common.NOTI_TITLE).equals(Common.REQUEST_DRIVER_DECLINE_AND_REMOVE_TRIP)) {
+                    EventBus.getDefault().postSticky(new DeclineRequestAndRemoveTripFromDriver());
+                }
+
+
+
                 else if (dataRecv.get(Common.NOTI_TITLE).equals(Common.REQUEST_DRIVER_ACCEPT)) {
 
-                    EventBus.getDefault().postSticky(new DeclineRequestFromDriver());
                     String tripKey = dataRecv.get(Common.TRIP_KEY);
                     EventBus.getDefault().postSticky(new DriverAcceptTripEvent(tripKey));
+
+                }
+
+                else if (dataRecv.get(Common.NOTI_TITLE).equals(Common.RIDER_COMPLETE_TRIP)) {
+
+                    String tripKey = dataRecv.get(Common.TRIP_KEY);
+                    EventBus.getDefault().postSticky(new DriverCompleteTripEvent(tripKey));
 
                 }
 

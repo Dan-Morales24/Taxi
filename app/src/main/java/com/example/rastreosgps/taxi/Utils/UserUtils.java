@@ -45,15 +45,12 @@ public class UserUtils {
     }
 
     public static void updateToken(Context context, String token){
-
         TokenModel tokenModel = new TokenModel(token);
         FirebaseDatabase.getInstance()
                 .getReference(Common.TOKEN_REFERENCE)
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .setValue(tokenModel)
                 .addOnFailureListener(e -> Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show()).addOnSuccessListener(aVoid ->{
-
-
         });
 
     }
@@ -65,7 +62,7 @@ public class UserUtils {
 
         //Obtener el Token de cloudMessaging
 
-        FirebaseDatabase.getInstance()
+                FirebaseDatabase.getInstance()
                 .getReference(Common.TOKEN_REFERENCE_DRIVERS)
                 .child(foundDriver.getKey())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -78,16 +75,15 @@ public class UserUtils {
                             notificationData.put(Common.NOTI_TITLE,Common.REQUEST_DRIVER_TITLE);
                             notificationData.put(Common.NOTI_CONTENT,"Solicitud de viaje en proceso");
                             notificationData.put(Common.RIDER_KEY,FirebaseAuth.getInstance().getCurrentUser().getUid());
-
                             notificationData.put(Common.RIDER_PICKUP_LOCATION_STRING,selectedPlaceEvent.getOriginString());
-                             notificationData.put(Common.RIDER_PICKUP_LOCATION, new StringBuilder("")
+                            notificationData.put(Common.RIDER_PICKUP_LOCATION, new StringBuilder("")
                             .append(selectedPlaceEvent.getOrigin().latitude)
                             .append(",")
                             .append(selectedPlaceEvent.getOrigin().longitude)
                             .toString());
 
 
-                            notificationData.put(Common.RIDER_DESTINATION_STRING,selectedPlaceEvent.getDestinationString());
+                            notificationData.put(Common.RIDER_DESTINATION_STRING,selectedPlaceEvent.getAddress());
                             notificationData.put(Common.RIDER_DESTINATION, new StringBuilder("")
                                     .append(selectedPlaceEvent.getDestination().latitude)
                                     .append(",")

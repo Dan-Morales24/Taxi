@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.rastreosgps.taxi.Common.Common;
+import com.example.rastreosgps.taxi.Model.EventBus.ShowNotificationFinishTrip;
 import com.example.rastreosgps.taxi.Utils.UserUtils;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -32,8 +33,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class NavigationClientActivity extends AppCompatActivity {
 
@@ -226,4 +232,22 @@ public class NavigationClientActivity extends AppCompatActivity {
         });
         dialog.show();
     }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+    }
+
+
+
+
+
 }
